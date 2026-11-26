@@ -1,0 +1,23 @@
+{
+ "files": {
+  "fonts/barlow-condensed-latin-400-normal.woff2": "7fff1bb22e5773f0d1a55d3093068b6dac4539e8bb3ac23fb9f0a729df2c7bb4",
+  "fonts/barlow-condensed-latin-600-normal.woff2": "215a93c696f442034a46fbb382958f753fda60e30490683aeea6b235fcbb2b66",
+  "fonts/inter-latin-400-normal.woff2": "8909904ab6c872eb994093482a88a28eca2cd95912d7b6fecd72103b0dc07edc",
+  "fonts/inter-latin-500-normal.woff2": "f3779f1efccc4bdcdf9c0a02ab95bf6bd092ed09c48c08cedc725889edd1d19f",
+  "fonts/inter-latin-600-normal.woff2": "f9a06e79cd3a2a20951c0f0e28f66dd0e6d3fda73911d640a2125c8fcb78f21a",
+  "fonts/lora-latin-400-normal.woff2": "ac079950fd9885261c0f73d9e87233f31b5427333ce0eb20e26c119458493c40",
+  "fonts/lora-latin-600-normal.woff2": "7bbfe9f3c9e9d6d07e17da4d5229a42b042cc2e16024993cb687dc08cc762557",
+  "fonts/nunito-latin-400-normal.woff2": "a5906e15ceb68f73d3b2c2076b4057c3f6ed401186d56283b45ce12944ca0735",
+  "fonts/nunito-latin-600-normal.woff2": "45f437de32ff5973eb5616b43c1308bf9fe897442f3d78a603c4cd0a06d66573",
+  "fonts/space-grotesk-latin-500-normal.woff2": "1b1a8131d9edf975d9decee81e2f2bf504812f7a4f498e5500f28a613e22e64c",
+  "fonts/space-grotesk-latin-600-normal.woff2": "685bbbf69fa616df1ef81847c85fc76be097ddfb3468ff2257be54511ab3130f",
+  "index.html": "7a0098b64b7613c71242d155416d15e218f341315f5fe06b02cf956c4a986cef",
+  "jspdf.plugin.autotable.min.js": "2223830cf9a1ec85af014cc71b37c1b1eb566f3d18b2ab8071e96af822c58bdb",
+  "jspdf.umd.min.js": "85ba2cc3ff858a20fa49fe6e457bec863ea40b55a9f3725e58a940e62f6f61a4",
+  "sms-rules.json": "d7d34d7650b455db0698b34dc1a127b663a1dbd882ad7962e6e5a9b48eb81fc9",
+  "version.json": "0c1f1b103ff667456fd143bf0530edda3c95bcf26b6a45fadce86b4431d34e1d",
+  "xlsx.full.min.js": "c9506197caf809a075b6dee1da0d36fb19da7158ffe8a88e7b0c96c5d8623c99"
+ },
+ "sig": "MEYCIQCWmMN5jzH1Tkk4wwtWRyZ89uAI82JGiXTZ38pGTnXY4AIhAJRMSpw04sIZySevVChFuJHdUFXp1/og1LoPeZT8YrGF",
+ "version": 18
+}

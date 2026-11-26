@@ -1,0 +1,24 @@
+{
+  "version": 18,
+  "files": [
+    "index.html",
+    "xlsx.full.min.js",
+    "fonts/inter-latin-400-normal.woff2",
+    "fonts/inter-latin-500-normal.woff2",
+    "fonts/inter-latin-600-normal.woff2",
+    "fonts/space-grotesk-latin-500-normal.woff2",
+    "fonts/space-grotesk-latin-600-normal.woff2",
+    "jspdf.umd.min.js",
+    "jspdf.plugin.autotable.min.js",
+    "sms-rules.json",
+    "fonts/nunito-latin-400-normal.woff2",
+    "fonts/nunito-latin-600-normal.woff2",
+    "fonts/lora-latin-400-normal.woff2",
+    "fonts/lora-latin-600-normal.woff2",
+    "fonts/barlow-condensed-latin-400-normal.woff2",
+    "fonts/barlow-condensed-latin-600-normal.woff2"
+  ],
+  "apk": 11,
+  "note": "App 1.11: updates now come from a separate releases page, so the app's code can be kept private",
+  "minApk": 0
+}
