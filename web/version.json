@@ -1,5 +1,5 @@
 {
-  "version": 27,
+  "version": 28,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -19,6 +19,6 @@
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
   "apk": 15,
-  "note": "Fixed: an empty month on the Budget tab no longer zooms the screen out and hides the tab bar. Long text anywhere now wraps onto the next line instead of widening the page; + New category in a category drop-down opens the full category screen (name, icon, colour) and brings you back with it picked; 1",
+  "note": "Fixed: swiping to change month now works on an empty month too, from anywhere on the page",
   "minApk": 0
 }
