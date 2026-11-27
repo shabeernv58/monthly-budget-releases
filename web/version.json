@@ -1,5 +1,5 @@
 {
-  "version": 19,
+  "version": 20,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -19,6 +19,6 @@
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
   "apk": 11,
-  "note": "A bank message you share into the app is recorded straight away (with Undo), but no longer marks a bill paid or a plan line done by itself: open it and tap Mark \u2026 paid / done",
+  "note": "Restoring a backup now checks the whole file first; a damaged or altered backup is refused and your data stays as it is",
   "minApk": 0
 }
