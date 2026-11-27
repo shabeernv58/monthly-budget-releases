@@ -1,5 +1,5 @@
 {
-  "version": 28,
+  "version": 29,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -19,6 +19,6 @@
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
   "apk": 15,
-  "note": "Fixed: swiping to change month now works on an empty month too, from anywhere on the page",
+  "note": "Settings reorganised: Currency now sits above Exchange rates, Done / pending marking moved to Look & feel, and Erase all data stands on its own just above About",
   "minApk": 0
 }
