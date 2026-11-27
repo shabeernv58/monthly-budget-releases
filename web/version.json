@@ -1,5 +1,5 @@
 {
-  "version": 21,
+  "version": 22,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -18,7 +18,7 @@
     "fonts/barlow-condensed-latin-400-normal.woff2",
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
-  "apk": 11,
-  "note": "Updated the Excel reader to the latest secure version; importing and exporting work as before",
+  "apk": 12,
+  "note": "Monthly tracker: each month starts on the day you choose (Settings \u203a Monthly tracker, set to 27). Everything from that day on counts in the next month; Salary counts for the month that starts nearest to the day it arrives (27 Nov salary \u2192 December); Move any transaction to the previous or next month",
   "minApk": 0
 }

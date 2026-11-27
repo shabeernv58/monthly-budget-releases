@@ -204,6 +204,11 @@ nav.tabs a[aria-current=page] svg{color:var(--acc)}
 pre.note{white-space:pre-wrap;font:14px/1.45 var(--fBody,Inter,sans-serif);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 12px}
 
 body.locked>*:not(#lockscr){visibility:hidden}
+#tabs a{position:relative}.tbadge{position:absolute;top:2px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--negc,#e0365f);color:#fff;font:700 11px/18px var(--fNum,inherit);text-align:center}
+.pendbtn{display:flex;align-items:center;gap:12px;width:100%;margin:12px 0 0;padding:12px 14px;border-radius:14px;border:1.5px solid var(--negc,#e0365f);background:color-mix(in srgb,var(--negc,#e0365f) 8%,var(--card));color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.pendbtn .t{flex:1;display:flex;flex-direction:column}.pendbtn .s{font-size:13px;opacity:.75}
+.pb-ic{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--negc,#e0365f);color:#fff;font-weight:800;flex:none}
+.pb-n{font-weight:700;color:var(--negc,#e0365f)}
 #updbar{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:15;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:14px;background:var(--ink);color:var(--bg);box-shadow:0 6px 20px rgba(0,0,0,.25)}
 #updbar span{flex:1;font-weight:600}#updbar .ib{background:transparent;border-color:transparent;color:inherit;width:36px;height:36px}#updbar .ib svg{width:18px;height:18px}
 #lockscr{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:auto;padding:24px 16px}
@@ -463,7 +468,15 @@ const fmtPlain = n => fmt(n); // for amounts already in their own currency
 const sum = (a, f) => a.reduce((t, x) => t + (Number(f ? f(x) : x) || 0), 0);
 const ymd = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 const today = () => ymd(new Date());
-const nowKey = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
+const calKey = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
+// ---------- tracking months: "the month starts on day N" ----------
+// With N = 27, December runs from 27 Nov to 26 Dec. With N = 1 it's the calendar month.
+const TRK = () => { let t = {}; try { t = (S && S.settings && S.settings.track) || {}; } catch (e) {} return Object.assign({ startDay: 27, salaryNext: true }, t); };
+const startDay = () => Math.min(28, Math.max(1, Math.round(+TRK().startDay || 1)));
+const periodOf = d => { if (!d || !/^\d{4}-\d{2}-\d{2}/.test(d)) return calKey(); const k = d.slice(0, 7), sd = startDay(); return sd > 1 && +d.slice(8, 10) >= sd ? addM(k, 1) : k; };
+const periodStart = k => { const sd = startDay(); return sd === 1 ? k + '-01' : addM(k, -1) + '-' + String(sd).padStart(2, '0'); };
+const periodEnd = k => { const d = new Date(periodStart(addM(k, 1)) + 'T00:00'); d.setDate(d.getDate() - 1); return ymd(d); };
+const nowKey = () => periodOf(today());
 const mLabel = k => { if (!k) return ''; const [y, m] = k.split('-'); return MN[+m - 1] + ' ' + y; };
 const mLong = k => { const [y, m] = k.split('-'); return BudgetImport.MONTHS[+m - 1].replace(/^./, c => c.toUpperCase()) + ' ' + y; };
 const addM = (k, d) => { let [y, m] = k.split('-').map(Number); m += d; while (m > 12) { m -= 12; y++; } while (m < 1) { m += 12; y--; } return y + '-' + String(m).padStart(2, '0'); };
@@ -1346,7 +1359,7 @@ const statsFor = (r, potId) => {
 };
 // month-end balance for the last n months (one pot in its currency, or all pots in AED)
 const balanceSeries = (potId, n = 12) => {
-  const keys = []; for (let i = n - 1; i >= 0; i--) keys.push(addM(nowKey(), -i));
+  const keys = []; for (let i = n - 1; i >= 0; i--) keys.push(addM(calKey(), -i));
   return keys.map(k => {
     const end = lastDay(k);
     let v = 0;
@@ -1356,7 +1369,7 @@ const balanceSeries = (potId, n = 12) => {
   });
 };
 const flowSeries = (potId, n = 12) => {
-  const out = []; for (let i = n - 1; i >= 0; i--) { const k = addM(nowKey(), -i), s = statsFor({ from: k + '-01', to: lastDay(k) }, potId); out.push({ k, dep: s.dep, wd: s.wd }); }
+  const out = []; for (let i = n - 1; i >= 0; i--) { const k = addM(calKey(), -i), s = statsFor({ from: k + '-01', to: lastDay(k) }, potId); out.push({ k, dep: s.dep, wd: s.wd }); }
   return out;
 };
 
@@ -1424,7 +1437,7 @@ const viewSavings = () => {
   const pots = SV().pots.filter(p => !p.archived), arch = SV().pots.filter(p => p.archived);
   const m = statsFor(periodRange('month'));
   return `${seg}<section class="hero"><div class="lab">Total savings</div><div class="big"><small>${CUR()}</small>${hv(fmtM(r2(totalSavingsAED())))}</div>
-    <p class="muted">${esc(mLabel(nowKey()))}: saved <b class="num">${hv('+' + fmtM(r2(m.dep)))}</b> · spent <b class="num neg">${hv('−' + fmtM(r2(m.wd)))}</b></p>
+    <p class="muted">${esc(mLabel(calKey()))}: saved <b class="num">${hv('+' + fmtM(r2(m.dep)))}</b> · spent <b class="num neg">${hv('−' + fmtM(r2(m.wd)))}</b></p>
     <div class="btns"><button class="btn pri" data-sva="dep">Deposit</button><button class="btn" data-sva="wd">Withdraw</button><button class="btn" data-sva="move">Move</button><button class="btn" id="svNew">New pot</button></div></section>
     <h2>Pots<span class="sp"></span>${pots.length ? `<button class="btn sm" id="svPdf">Export PDF</button>` : ''}</h2>
     <div class="list">${pots.length ? pots.map(potRow).join('') : '<div class="empty">Create a pot for each thing you save for (car, vacation, emergency fund) or each place you keep money. Put its current balance in as the opening amount.</div>'}</div>
@@ -1449,7 +1462,7 @@ const viewPot = p => {
     <h2>Timeline</h2>${timeline(p.id)}`;
 };
 const viewCalendar = () => {
-  const k = calMonth || nowKey(), [y, m] = k.split('-').map(Number);
+  const k = calMonth || calKey(), [y, m] = k.split('-').map(Number);
   const first = new Date(y, m - 1, 1), pad = (first.getDay() + 6) % 7, days = new Date(y, m, 0).getDate();
   const day = {}; SV().entries.forEach(e => { if (e.date.slice(0, 7) !== k || e.type === 'move' || e.opening) { if (e.date.slice(0, 7) === k && e.opening) { const d = day[e.date] = day[e.date] || { dep: 0, wd: 0, n: 0 }; d.n++; } return; } const d = day[e.date] = day[e.date] || { dep: 0, wd: 0, n: 0 }; d[e.type] += entryAED(e); d.n++; });
   SV().entries.forEach(e => { if (e.date.slice(0, 7) === k && e.type === 'move') { const d = day[e.date] = day[e.date] || { dep: 0, wd: 0, n: 0 }; d.n++; } });
@@ -1489,8 +1502,8 @@ const bindSavings = () => {
   b('svImp', () => $('#fileJ').click());
   b('svEdit', () => potForm(potById(savPot)));
   b('svPdf', () => savingsPDF(savPot ? potById(savPot) : null));
-  b('calPrev', () => { calMonth = addM(calMonth || nowKey(), -1); render(); });
-  b('calNext', () => { calMonth = addM(calMonth || nowKey(), 1); render(); });
+  b('calPrev', () => { calMonth = addM(calMonth || calKey(), -1); render(); });
+  b('calNext', () => { calMonth = addM(calMonth || calKey(), 1); render(); });
   b('stPrev', () => { statOffset--; render(); });
   b('stNext', () => { statOffset = Math.min(0, statOffset + 1); render(); });
   document.querySelectorAll('[data-sview]').forEach(el => el.onclick = () => { savView = el.dataset.sview; render(); });
@@ -1666,7 +1679,7 @@ const ACT = () => {
     for (const k in a.map.merchants) { const m = a.map.merchants[k], kw = shopKey(k); if (kw && !a.map.rules.some(r => r.kw === kw)) a.map.rules.push({ id: uid(), kw, cat: m.cat || 'Other', line: m.line || '', ignore: !!m.ignore }); }
     a.map.merchants = {}; a.map.rulesMigrated = true;
   }
-  a.map.billers = a.map.billers || { DEWA: { match: 'DEWA', dueDays: 15, line: '', cat: 'Utilities' } };
+  a.map.billers = a.map.billers || {};
   a.cfg = Object.assign({ remindDays: 3, remindOnDue: true, remindTime: '09:00', notify: true }, a.cfg || {});
   return a;
 };
@@ -1688,30 +1701,39 @@ const ruleHits = (r, merchant) => { const kw = shopNorm(r.kw).replace(/\*/g, ' '
 const shopRule = merchant => { if (!merchant) return null; let best = null; for (const r of ACT().map.rules) if (ruleHits(r, merchant) && (!best || r.kw.length > best.kw.length)) best = r; return best; };
 const SMS = () => BRIDGE && BRIDGE.smsStatus ? BRIDGE : null;
 const addDays = (ymdS, n) => { const d = new Date(ymdS + 'T00:00'); d.setDate(d.getDate() + n); return ymd(d); };
-const NONSPEND = { salary: 1, unknownCredit: 1, installment: 1, wallet: 1, income: 1, ignoredMsg: 1 };
+const NONSPEND = { salary: 1, unknownCredit: 1, installment: 1, wallet: 1, income: 1, ignoredMsg: 1, cardPayment: 1 };
+// waiting for you (Pending actions): not counted anywhere until answered
+const PENDING = { needs: 1, review: 1, month: 1, cardtype: 1 };
 const KLABEL = { income: 'Money received', ignoredMsg: 'Ignored message', purchase: 'Card purchase', refund: 'Refund', cardPayment: 'Card bill payment', wallet: 'Wallet spend', installment: 'Instalment plan', salary: 'Salary', unknown: 'Money out', unknownCredit: 'Money in', manual: 'Cash / manual' };
 
-// credit-card purchases are settled by paying the card's bill: by default the payment counts, not each purchase
-const cardMode = (card, type) => { const c = ACT().map.cards[card]; return c && c.mode ? c.mode : (type === 'Credit' ? 'payment' : 'purchases'); };
+// credit-card purchases count one by one (in the month you choose); paying the card's bill doesn't count again
+const cardType = t => t.cardType || ((ACT().map.cards[t.card] || {}).type) || '';
+const cardLabel = c => { const cc = ACT().map.cards[c] || {}; return cc.name ? `${cc.name} (${c})` : `Card ${c}`; };
 // signed amount a transaction adds to "actually spent" (0 = not counted)
 const spendOf = t => {
-  if (t.status === 'ignored' || NONSPEND[t.kind]) return 0;
+  if (t.status === 'ignored' || NONSPEND[t.kind] || PENDING[t.status]) return 0;
   if (t.sav && t.sav.counts === false) return 0; // moved to/paid from savings and set not to count
   if (t.status === 'income') return 0;
-  if (t.kind === 'purchase') return t.cardType === 'Credit' && cardMode(t.card, 'Credit') === 'payment' ? 0 : +t.amount;
-  if (t.kind === 'refund') return t.cardType === 'Credit' && cardMode(t.card, 'Credit') === 'payment' ? 0 : -(+t.amount);
-  if (t.kind === 'cardPayment') return cardMode(t.card, 'Credit') === 'payment' ? +t.amount : 0;
-  return +t.amount; // unknown, manual
+  if (t.kind === 'refund') return -(+t.amount);
+  return +t.amount; // purchase, unknown, manual
 };
 const whyNot = t => {
   if (t.status === 'ignored') return 'not a transaction';
   if (t.kind === 'wallet') return 'wallet spend (the top-up already counted)';
   if (t.kind === 'installment') return 'instalment plan (purchase already counted)';
-  if ((t.kind === 'purchase' || t.kind === 'refund') && t.cardType === 'Credit') return 'on credit card · counted when the card bill is paid';
-  if (t.kind === 'cardPayment') return 'card payment · purchases counted instead';
+  if (t.kind === 'cardPayment') return 'card bill payment · the purchases are counted instead';
+  if (PENDING[t.status]) return 'waiting for you in Pending actions';
   return '';
 };
-const monthTxns = k => ACT().txns.filter(t => (t.date || '').slice(0, 7) === k);
+// which tracking month a transaction counts in: your choice, or the salary rule, or the month its date falls in
+const isSalary = t => t.kind === 'salary' || t.status === 'income-salary';
+const salaryMonth = d => { // the month whose start date is closest to the day the salary arrived
+  const p0 = periodOf(d), s0 = new Date(periodStart(p0) + 'T00:00'), s1 = new Date(periodStart(addM(p0, 1)) + 'T00:00'), x = new Date(d + 'T00:00');
+  return (s1 - x) < (x - s0) ? addM(p0, 1) : p0;
+};
+const txnMonth = t => t.month || (isSalary(t) && TRK().salaryNext ? salaryMonth(t.date || today()) : periodOf(t.date || today()));
+const monthTxns = k => ACT().txns.filter(t => txnMonth(t) === k);
+const billMonth = b => (b.due ? periodOf(b.due) : '');
 const actualIncome = k => {
   const inc = ACT().income[k] || {};
   const smsSalary = sum(monthTxns(k).filter(t => (t.kind === 'salary' || t.status === 'income-salary') && t.status !== 'ignored'), t => +t.amount);
@@ -1731,8 +1753,8 @@ const setLineDone = (k, name, done) => {
 };
 const payBill = (b, amt, date, txnId) => {
   b.status = 'paid'; b.paidAmount = r2(amt); b.paidDate = date; b.paidBy = txnId || '';
-  setLineDone(date.slice(0, 7), billLine(b), true);
-  if (b.due) setLineDone(b.due.slice(0, 7), billLine(b), true);
+  setLineDone(periodOf(date), billLine(b), true);
+  if (b.due) setLineDone(periodOf(b.due), billLine(b), true);
 };
 const openBills = () => ACT().bills.filter(b => b.status !== 'paid');
 
@@ -1744,6 +1766,10 @@ const processEvent = (ev, quiet) => {
     if (!t) { const b = a.bills.find(x => x.key === ev.key); if (b && ev.action === 'confirm') confirmReview(b); return; }
     if (ev.action === 'confirm') { confirmReview(t); return; }
     if (ev.action === 'ignore') t.status = 'ignored';
+    if (ev.action === 'salary') t.status = t.kind === 'salary' ? 'auto' : 'income-salary';
+    if (ev.action === 'income') t.status = 'income';
+    if (ev.action === 'thism' || ev.action === 'nextm') setTxnMonth(t, ev.action === 'nextm' ? 1 : 0);
+    if (ev.action === 'credit' || ev.action === 'debit') setCardType(t.card, ev.action === 'credit' ? 'Credit' : 'Debit');
     if (ev.action === 'other') { t.cat = 'Other'; t.status = 'auto'; if (t.merchant) { const r = shopRule(t.merchant); if (r) r.cat = 'Other'; else a.map.rules.push({ id: uid(), kw: shopKey(t.merchant), cat: 'Other', line: '', ignore: false }); } }
     return;
   }
@@ -1761,31 +1787,37 @@ const processEvent = (ev, quiet) => {
   if (kind === 'skip' || kind === 'info' || !kind) return;
   if (kind === 'bill') {
     if (a.bills.some(b => b.biller === p.biller && b.period && b.period === p.period)) return;
-    const bl = a.map.billers[p.biller] || {};
-    const b = { id: uid(), key: ev.key, review, kind: 'bill', biller: p.biller || 'Bill', billMonth: p.billMonth || '', period: p.period || '', account: p.account || '', amount: amt, date, due: p.due || addDays(date, +bl.dueDays || 15), status: 'due', body: ev.body || '' };
-    a.bills.push(b); if (!shared) setLineDone(b.due.slice(0, 7), billLine(b), false);
+    const b = { id: uid(), key: ev.key, review, kind: 'bill', biller: p.biller || 'Bill', billMonth: p.billMonth || '', period: p.period || '', account: p.account || '', amount: amt, date, due: p.due || '', status: p.due ? 'due' : 'nodue', body: ev.body || '' };
+    a.bills.push(b); if (!shared && b.due) setLineDone(periodOf(b.due), billLine(b), false);
     return;
   }
   if (kind === 'statement') {
     if (a.bills.some(b => b.kind === 'statement' && b.card === p.card && b.due === p.due)) return;
-    const b = { id: uid(), key: ev.key, review, kind: 'statement', bank: p.bank || '', card: p.card || '', amount: num2(p.total), min: num2(p.min), date, due: p.due || addDays(date, 25), status: 'due', body: ev.body || '' };
-    a.bills.push(b); if (!shared) setLineDone(b.due.slice(0, 7), billLine(b), false);
+    const b = { id: uid(), key: ev.key, review, kind: 'statement', bank: p.bank || '', card: p.card || '', amount: num2(p.total), min: num2(p.min), date, due: p.due || '', status: p.due ? 'due' : 'nodue', body: ev.body || '' };
+    if (b.card) { a.map.cards[b.card] = Object.assign({ type: 'Credit', bank: b.bank, name: '' }, a.map.cards[b.card] || {}); if (!a.map.cards[b.card].type) a.map.cards[b.card].type = 'Credit'; }
+    a.bills.push(b); if (!shared && b.due) setLineDone(periodOf(b.due), billLine(b), false);
     return;
   }
   const t = { id: uid(), key: ev.key, src: 'sms', kind, date, amount: amt, merchant: p.merchant || '', card: p.card || '', cardType: p.cardType || '', bank: p.bank || '', balance: p.balance || '', cat: 'Other', line: '', status: 'auto', note: '', body: ev.body || '', n: p.n || '', inst: p.inst || '' };
-  if (t.card && !a.map.cards[t.card]) a.map.cards[t.card] = { type: t.cardType || (kind === 'cardPayment' || kind === 'statement' ? 'Credit' : ''), bank: t.bank, mode: '' };
+  if (t.card && !a.map.cards[t.card]) a.map.cards[t.card] = { type: t.cardType || (kind === 'cardPayment' ? 'Credit' : ''), bank: t.bank, name: '' };
+  if (t.card && t.cardType && !a.map.cards[t.card].type) a.map.cards[t.card].type = t.cardType;
   if (kind === 'purchase' || kind === 'refund') {
     const known = shopRule(t.merchant);
     const biller = Object.keys(a.map.billers).find(k => a.map.billers[k].match && new RegExp(a.map.billers[k].match.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(t.merchant));
     if (known) { t.cat = known.cat || 'Other'; t.line = known.line || ''; if (known.ignore) t.status = 'ignored'; }
-    else if (biller) { const bl = a.map.billers[biller]; t.cat = bl.cat || 'Utilities'; t.line = bl.line || ''; }
-    else { t.cat = guessCat(t.merchant); t.status = spendOf(Object.assign({}, t, { status: 'auto' })) ? 'needs' : 'auto'; }
+    else { t.cat = guessCat(t.merchant); t.status = 'needs'; } // a bill payment too: you choose its category
+    // which month: a debit card counts now; a credit card asks; an unknown card asks credit or debit first
+    if (kind === 'purchase' && t.card && t.status !== 'ignored') {
+      const ty = cardType(t);
+      if (!ty) { t.held = t.status; t.status = 'cardtype'; }
+      else if (ty === 'Credit') { t.held = t.status; t.status = 'month'; }
+    }
     if (biller && kind === 'purchase') { const b = a.bills.filter(x => x.biller === biller && x.status !== 'paid').sort((x, y) => x.due.localeCompare(y.due))[0]; if (b) { if (shared) t.suggest = { bill: b.id }; else payBill(b, amt, date, t.id); } }
   } else if (kind === 'cardPayment') {
     const c = a.map.cards[t.card] || {}; t.cat = EMI_CAT; t.line = c.line || '';
     const b = a.bills.filter(x => x.kind === 'statement' && x.card === t.card && x.status !== 'paid').sort((x, y) => x.due.localeCompare(y.due))[0];
     if (b) { if (shared) t.suggest = { bill: b.id }; else payBill(b, amt, date, t.id); }
-    else if (t.line) { if (shared) t.suggest = { line: t.line }; else setLineDone(date.slice(0, 7), t.line, true); }
+    else if (t.line) { if (shared) t.suggest = { line: t.line }; else setLineDone(periodOf(date), t.line, true); }
   } else if (kind === 'salary') { t.cat = 'Income'; }
   else if (kind === 'unknownCredit') { t.cat = 'Income'; t.status = 'needs'; }
   else if (kind === 'unknown') { t.status = 'needs'; }
@@ -1796,8 +1828,28 @@ const processEvent = (ev, quiet) => {
   if (review) { t.after = t.status; t.status = 'review'; }
   if (shared) t.shared = true;
   a.txns.push(t);
-  if (t.line && spendOf(t)) { if (shared) t.suggest = t.suggest || { line: t.line }; else setLineDone(date.slice(0, 7), t.line, true); }
+  if (t.line && spendOf(t)) { if (shared) t.suggest = t.suggest || { line: t.line }; else setLineDone(txnMonth(t), t.line, true); }
 };
+// a transaction's month: 0 = the month its date falls in, 1 = the month after, -1 = the month before
+const setTxnMonth = (t, off) => {
+  const base = periodOf(t.date || today());
+  if (off) t.month = addM(base, off); else delete t.month;
+  if (t.status === 'month') { t.status = t.held || 'auto'; delete t.held; }
+};
+// card type answered (or changed): everything waiting on it moves on
+const setCardType = (card, type) => {
+  const a = ACT(); if (!card) return;
+  a.map.cards[card] = Object.assign({ bank: '', name: '' }, a.map.cards[card] || {}, { type });
+  a.txns.forEach(x => { if (x.card === card && x.status === 'cardtype') { if (type === 'Credit') x.status = 'month'; else { x.status = x.held || 'auto'; delete x.held; } } });
+};
+// ---------- Pending actions: anything the app isn't sure about waits here, not counted, until you answer ----------
+const pendingItems = () => {
+  const a = ACT(), out = [];
+  a.txns.forEach(t => { if (PENDING[t.status]) out.push({ type: t.status, t, at: (a.seen[t.key] || 0) || Date.parse(t.date) || 0 }); });
+  a.bills.forEach(b => { if (b.status === 'nodue') out.push({ type: 'nodue', b, at: (a.seen[b.key] || 0) || Date.parse(b.date) || 0 }); });
+  return out.sort((x, y) => y.at - x.at);
+};
+const pendingBadge = () => { const a = ACT(), since = a.pendingCleared || 0; return pendingItems().filter(i => i.at > since).length; };
 // "Is this right?" answered yes: count it towards trusting the pattern
 const confirmReview = x => { if (x.review) { confirmLearned(x.review); x.review = ''; } if (x.status === 'review') { confirmLearned(x.learned); x.status = x.after || 'auto'; delete x.after; } };
 const num2 = s => r2(String(s == null ? '' : s).replace(/,/g, '')) || 0;
@@ -1809,11 +1861,11 @@ const syncNative = () => {
   const a = ACT(), [hh, mm] = (a.cfg.remindTime || '09:00').split(':').map(Number);
   const merchants = {}; for (const k in a.map.merchants) merchants[k] = { cat: a.map.merchants[k].cat || 'Other', ignore: !!a.map.merchants[k].ignore };
   const rules = a.map.rules.filter(r => shopNorm(r.kw).length >= 2).map(r => ({ kw: shopNorm(r.kw).replace(/\*/g, ' ').trim(), cat: r.cat || 'Other', ignore: !!r.ignore })).sort((x, y) => y.kw.length - x.kw.length);
-  const billers = {}; for (const k in a.map.billers) billers[k] = { dueDays: +a.map.billers[k].dueDays || 15 };
+  const cards = {}; for (const k in a.map.cards) cards[k] = { type: a.map.cards[k].type || '' };
   try {
     const learned = (a.learned || []).map(r => ({ id: r.id, kind: r.kind, match: r.match, fields: r.fields, biller: r.biller || '', name: r.name, trusted: !!r.trusted }));
-    b.syncSmsSettings(JSON.stringify({ notify: a.cfg.notify !== false, merchants, rules, billers, learned, actions: notifActsNative(), remind: { days: +a.cfg.remindDays || 0, onDue: !!a.cfg.remindOnDue, overdue: !!(NOTIF().on && NOTIF().overdue), hour: hh || 0, minute: mm || 0 } }));
-    b.syncBills(JSON.stringify(a.bills.filter(x => x.status !== 'paid' && x.due >= addDays(today(), -1)).map(x => ({ key: x.key || x.id, title: billTitle(x), amount: x.amount, min: x.min || 0, due: x.due, paid: false }))));
+    b.syncSmsSettings(JSON.stringify({ notify: a.cfg.notify !== false, merchants, rules, cards, learned, actions: notifActsNative(), remind: { days: +a.cfg.remindDays || 0, onDue: !!a.cfg.remindOnDue, overdue: !!(NOTIF().on && NOTIF().overdue), hour: hh || 0, minute: mm || 0 } }));
+    b.syncBills(JSON.stringify(a.bills.filter(x => x.status !== 'paid' && x.status !== 'nodue' && x.due && x.due >= addDays(today(), -1)).map(x => ({ key: x.key || x.id, title: billTitle(x), amount: x.amount, min: x.min || 0, due: x.due, paid: false }))));
   } catch (e) {}
 };
 const processQueue = () => {
@@ -1856,16 +1908,16 @@ window.__openSms = () => {
   const want = (raw.match(/\|(sav|cat|fix)$/) || [])[1] || '';
   const key = raw.replace(/\|(sav|cat|fix)$/, '').replace(/-r-(before|due|over)$/, '');
   const t = ACT().txns.find(x => x.key === key), bl = ACT().bills.find(x => (x.key || x.id) === key);
-  const k = t ? t.date.slice(0, 7) : bl ? bl.due.slice(0, 7) : cur;
+  const k = t ? txnMonth(t) : bl ? (billMonth(bl) || nowKey()) : cur;
   cur = k; if (location.hash !== '#budget') location.hash = 'budget'; else render();
-  setTimeout(() => { if (t && want === 'sav') savChoice(t); else if (t) txnForm(t); else if (bl) billForm(bl); }, 120);
+  setTimeout(() => { if (t && want === 'sav') savChoice(t); else if (t && PENDING[t.status] && t.status !== 'needs' && t.status !== 'review') pendingSheet(); else if (t) txnForm(t); else if (bl) billForm(bl); }, 120);
 };
 window.__smsPerm = () => { syncNative(); render(); };
 
 // ---------- forms ----------
 const lineOptions = k => { const m = S.months[k]; const names = m ? [...new Set(m.expenses.map(x => x.name))] : []; return [['', 'None']].concat(names.map(n => [n, n])); };
 const txnForm = (t, isNew) => {
-  const a = ACT(), k = (t.date || today()).slice(0, 7);
+  const a = ACT(), k = txnMonth(t);
   const isIn = t.kind === 'salary' || t.kind === 'unknownCredit';
   const why = whyNot(t);
   // a shared message's suggestion: mark its bill paid, or its plan line done, only when you say so
@@ -1885,7 +1937,11 @@ const txnForm = (t, isNew) => {
       fields.push({ k: 'kwHelp', type: 'html', html: `<p class="muted" style="margin-top:-6px">${esc(t.merchant)}. Shorten it to the part every branch shares, e.g. NESTO for all Nesto shops.</p>` });
     }
   }
-  if (t.card && (t.kind === 'purchase' || t.kind === 'refund' || t.kind === 'cardPayment')) fields.push({ k: 'cardLine', type: 'html', html: `<p class="muted">Card ${esc(t.card)}${t.cardType ? ' (' + esc(t.cardType.toLowerCase()) + ')' : ''}: ${cardMode(t.card, t.cardType || 'Credit') === 'payment' ? 'bill payments count, purchases don\'t' : 'each purchase counts'}. Change it in Settings › Bank SMS &amp; bills.</p>` });
+  if (t.card && (t.kind === 'purchase' || t.kind === 'refund' || t.kind === 'cardPayment')) fields.push({ k: 'cardLine', type: 'html', html: `<p class="muted">${esc(cardLabel(t.card))}${cardType(t) ? ' · ' + esc(cardType(t).toLowerCase()) + ' card' : ''}.</p>` });
+  if (!isNew && t.kind !== 'cardPayment' && t.status !== 'ignored') {
+    const base = periodOf(t.date || today()), curM = txnMonth(t);
+    fields.push({ k: 'inMonth', label: 'Counts in month', type: 'select', options: [[addM(base, -1), mLong(addM(base, -1))], [base, mLong(base)], [addM(base, 1), mLong(addM(base, 1))]].concat([addM(base, -1), base, addM(base, 1)].includes(curM) ? [] : [[curM, mLong(curM)]]), value: curM });
+  }
   fields.push({ k: 'note', label: 'Note', type: 'textarea', value: t.note });
   const rv = t.status === 'review' ? `<div class="banner"><b>Read with a pattern you taught. Is this right?</b><div class="btns" style="margin-bottom:0"><button class="btn sm hot" type="button" id="rvYes">Yes, it's right</button><button class="btn sm" type="button" id="rvFix">Fix the pattern</button></div></div>` : '';
   const teachBtn = t.body && (t.kind === 'unknown' || t.kind === 'unknownCredit') ? '<div class="btns"><button class="btn sm" type="button" id="tTeach">Teach the app this message</button></div>' : '';
@@ -1903,6 +1959,8 @@ const txnForm = (t, isNew) => {
       if (!ruleHits({ kw }, t.merchant)) return `"${kw}" isn't in ${t.merchant}. Use part of the shop name.`;
     }
     snap();
+    if (v.inMonth) { const base = periodOf(t.date || today()), auto = isSalary(t) && TRK().salaryNext ? salaryMonth(t.date || today()) : base; if (v.inMonth === auto) delete t.month; else t.month = v.inMonth; if (t.status === 'month') { t.status = t.held || 'auto'; delete t.held; } }
+    if (t.status === 'cardtype') { t.status = t.held || 'auto'; delete t.held; }
     if (isIn) { if (v.as === 'salary') { t.status = t.kind === 'salary' ? 'auto' : 'income-salary'; } else t.status = v.as; }
     else {
       t.cat = v.cat; t.line = v.line;
@@ -1916,7 +1974,7 @@ const txnForm = (t, isNew) => {
         Object.assign(r, { cat: v.cat, line: v.line, ignore: false, auto: false });
         setTimeout(() => offerApplyRule(r, t.id), 400);
       } else if (t.merchant) setTimeout(() => autoLearn(t), 400);
-      if (v.line && spendOf(t)) setLineDone(t.date.slice(0, 7), v.line, true);
+      if (v.line && spendOf(t)) setLineDone(txnMonth(t), v.line, true);
     }
     t.note = v.note;
     if (isNew) a.txns.push(t);
@@ -1927,7 +1985,7 @@ const txnForm = (t, isNew) => {
     after: () => {
       const d = $('#del'); if (d && t.src !== 'manual') d.textContent = t.status === 'ignored' ? 'Record it again' : 'Not a transaction';
       const g = $('#sgGo'); if (g) g.onclick = () => {
-        snap(); if (sgBill) payBill(sgBill, t.amount, t.date, t.id); else setLineDone(t.date.slice(0, 7), sgLine, true);
+        snap(); if (sgBill) payBill(sgBill, t.amount, t.date, t.id); else setLineDone(txnMonth(t), sgLine, true);
         delete t.suggest; save(); syncNative(); closeSheet(); render(); toast(sgBill ? 'Bill marked paid' : 'Marked done', true);
       };
       const gn = $('#sgNo'); if (gn) gn.onclick = () => { snap(); delete t.suggest; save(); closeSheet(); render(); toast('Left as it is', true); };
@@ -2034,7 +2092,7 @@ const savLinkForm = (t, mode) => {
   }, { ok: 'Save' });
 };
 const billForm = b => {
-  const a = ACT(), k = (b.due || today()).slice(0, 7);
+  const a = ACT(), k = billMonth(b) || nowKey();
   const lineVal = billLine(b);
   const fields = [
     { k: 'amount', label: b.kind === 'statement' ? 'Total due' : 'Bill amount', type: 'number', money: true, value: b.amount, half: true },
@@ -2042,17 +2100,18 @@ const billForm = b => {
     { k: 'line', label: `Plan line it belongs to (${tabName('month')} tab)`, type: 'select', options: lineOptions(k), value: lineVal },
     { k: 'paid', label: b.status === 'paid' ? `Paid${b.paidAmount ? ' ' + MAIN() + ' ' + fmtM(b.paidAmount) : ''}${b.paidDate ? ' on ' + fmtDay(b.paidDate) : ''}` : 'Mark as paid', type: 'checkbox', value: b.status === 'paid' }
   ];
-  if (b.kind === 'bill' && b.biller) fields.push({ k: 'dueDays', label: `${b.biller} SMS have no due date: due this many days after the bill`, type: 'number', value: (a.map.billers[b.biller] || {}).dueDays || 15 });
   form(billTitle(b), fields, v => {
+    if (!v.due) return "Set the bill's due date";
     snap();
-    b.amount = v.amount; b.due = v.due || b.due;
+    b.amount = v.amount; b.due = v.due;
+    if (b.status === 'nodue') b.status = 'due';
     if (b.kind === 'statement') a.map.cards[b.card] = Object.assign(a.map.cards[b.card] || {}, { line: v.line, type: 'Credit' });
-    else a.map.billers[b.biller] = Object.assign(a.map.billers[b.biller] || { match: b.biller }, { line: v.line, dueDays: v.dueDays || 15 });
+    else a.map.billers[b.biller] = Object.assign(a.map.billers[b.biller] || { match: b.biller }, { line: v.line });
     if (v.paid && b.status !== 'paid') payBill(b, b.amount, today(), '');
-    if (!v.paid && b.status === 'paid') { b.status = 'due'; b.paidAmount = 0; setLineDone(b.due.slice(0, 7), v.line, false); }
-    if (v.line && b.status !== 'paid') setLineDone(b.due.slice(0, 7), v.line, false);
+    if (!v.paid && b.status === 'paid') { b.status = 'due'; b.paidAmount = 0; setLineDone(periodOf(b.due), v.line, false); }
+    if (v.line && b.status !== 'paid') setLineDone(periodOf(b.due), v.line, false);
     syncNative();
-  }, { pre: `${b.review ? `<div class="banner"><b>Read with a pattern you taught. Is this right?</b><div class="btns" style="margin-bottom:0"><button class="btn sm hot" type="button" id="rvYes">Yes, it's right</button><button class="btn sm" type="button" id="rvFix">Fix the pattern</button></div></div>` : ''}${b.kind === 'statement' ? `<p class="muted">Minimum due ${MAIN()} ${fmtM(b.min)}</p>` : b.period ? `<p class="muted">${esc(b.period)}</p>` : ''}${b.body ? `<pre class="note">${esc(b.body)}</pre>` : ''}`, del: () => { a.bills = a.bills.filter(x => x.id !== b.id); syncNative(); },
+  }, { pre: `${b.review ? `<div class="banner"><b>Read with a pattern you taught. Is this right?</b><div class="btns" style="margin-bottom:0"><button class="btn sm hot" type="button" id="rvYes">Yes, it's right</button><button class="btn sm" type="button" id="rvFix">Fix the pattern</button></div></div>` : ''}${b.status === 'nodue' ? '<div class="banner"><b>No due date in this bill message.</b> Set it below.</div>' : ''}${b.date ? `<p class="muted">Bill date ${esc(fmtDay(b.date))}</p>` : ''}${b.kind === 'statement' ? `<p class="muted">Minimum due ${MAIN()} ${fmtM(b.min)}</p>` : b.period ? `<p class="muted">${esc(b.period)}</p>` : ''}${b.body ? `<pre class="note">${esc(b.body)}</pre>` : ''}`, del: () => { a.bills = a.bills.filter(x => x.id !== b.id); syncNative(); },
     after: () => {
       const y = $('#rvYes'); if (y) y.onclick = () => { snap(); confirmReview(b); save(); syncNative(); closeSheet(); render(); toast('Thanks. Pattern confirmed.'); };
       const fx = $('#rvFix'); if (fx) fx.onclick = () => { const rid = b.review; a.bills = a.bills.filter(x => x.id !== b.id); delete a.seen[b.key]; a.txns.push({ id: uid(), key: b.key, src: 'sms', kind: 'unknown', date: b.date, amount: b.amount, merchant: '', cat: 'Other', line: '', status: 'needs', note: '', body: b.body }); save(); teachForm({ body: b.body, ruleId: rid }); };
@@ -2084,6 +2143,70 @@ const smsSetupCard = () => {
   if (st.receive && st.read) return '';
   return `<div class="banner"><b>Record spending from bank SMS automatically</b><p class="muted" style="margin:6px 0 0">Your messages are read on this phone only.</p><div class="btns" style="margin-bottom:0"><button class="btn sm hot" id="smsSetup">Set up</button></div></div>`;
 };
+// Pending actions: one list of everything waiting for an answer
+let pendSel = new Set();
+const pendingSheet = () => {
+  const a = ACT(), items = pendingItems();
+  if (!items.length) { closeSheet(); render(); toast('Nothing pending'); return; }
+  const what = i => {
+    if (i.b) return { title: esc(billTitle(i.b)), sub: `${MAIN()} ${fmtM(i.b.amount)} · bill of ${fmtDay(i.b.date)} · no due date`, btns: '<button class="btn sm pri" data-pa="due">Set due date</button>' };
+    const t = i.t, nm = esc(t.merchant || KLABEL[t.kind] || 'Transaction'), base = `${MAIN()} ${fmtM(t.amount)} · ${fmtDay(t.date)}${t.card ? ' · ' + cardLabel(t.card) : ''}`;
+    if (i.type === 'month') return { title: nm, sub: base + ' · credit card: which month?', btns: `<button class="btn sm pri" data-pa="thism">${esc(mLabel(periodOf(t.date)))}</button><button class="btn sm" data-pa="nextm">${esc(mLabel(addM(periodOf(t.date), 1)))}</button>` };
+    if (i.type === 'cardtype') return { title: nm, sub: base + ' · new card: credit or debit?', btns: '<button class="btn sm pri" data-pa="credit">Credit card</button><button class="btn sm" data-pa="debit">Debit card</button>' };
+    if (i.type === 'review') return { title: nm, sub: base + ' · read with a pattern you taught: is it right?', btns: '<button class="btn sm pri" data-pa="yes">Yes</button><button class="btn sm" data-pa="open">Fix</button>' };
+    const inc = t.kind === 'unknownCredit';
+    return { title: nm, sub: base + (inc ? ' · money in: what is it?' : ` · category? (suggested: ${esc(t.cat || 'Other')})`), btns: inc ? '<button class="btn sm pri" data-pa="salary">Salary</button><button class="btn sm" data-pa="income">Extra income</button>' : `<button class="btn sm pri" data-pa="ok">Keep ${esc(t.cat || 'Other')}</button><button class="btn sm" data-pa="open">Choose</button>` };
+  };
+  pendSel = new Set([...pendSel].filter(id => items.some(i => (i.t || i.b).id === id)));
+  $('#sheet').innerHTML = `<h3><span class="pb-ic" aria-hidden="true">!</span> Pending actions</h3>
+    <p class="muted">These aren't counted anywhere until you answer. Tick items to discard them as "not a transaction".</p>
+    <div class="list">${items.map(i => { const x = i.t || i.b, w = what(i); return `<div class="row pitem" data-pid="${esc(x.id)}" style="flex-wrap:wrap;align-items:flex-start">
+      <input type="checkbox" data-psel="${esc(x.id)}" ${pendSel.has(x.id) ? 'checked' : ''} aria-label="Select ${esc(w.title)}" style="width:22px;height:22px;margin-top:2px;accent-color:var(--acc)">
+      <span class="t" style="flex:1;min-width:0"><span class="n">${w.title}</span><span class="s" style="white-space:normal;overflow:visible">${esc(w.sub)}</span></span>
+      <div class="btns" style="flex-basis:100%;margin:6px 0 0 32px">${w.btns}</div></div>`; }).join('')}</div>
+    <div class="btns"><button class="btn" id="pDiscard" ${pendSel.size ? '' : 'disabled'}>Discard selected (${pendSel.size})</button><button class="btn" id="pClear">Clear reminders</button><button class="btn" id="pClose">Close</button></div>
+    <p class="muted">"Clear reminders" removes the badge and the app's notifications; the items stay here until answered.</p>`;
+  $('#veil').classList.add('on');
+  const find = id => items.find(i => (i.t || i.b).id === id);
+  const done = msg => { save(); syncNative(); render(); if (pendingItems().length) pendingSheet(); else { closeSheet(); } if (msg) toast(msg); };
+  document.querySelectorAll('[data-psel]').forEach(c => c.onchange = () => { if (c.checked) pendSel.add(c.dataset.psel); else pendSel.delete(c.dataset.psel); $('#pDiscard').disabled = !pendSel.size; $('#pDiscard').textContent = `Discard selected (${pendSel.size})`; });
+  document.querySelectorAll('[data-pa]').forEach(btn => btn.onclick = () => {
+    const i = find(btn.closest('[data-pid]').dataset.pid); if (!i) return;
+    const act = btn.dataset.pa, t = i.t;
+    if (act === 'due') { billForm(i.b); return; }
+    if (act === 'open') { txnForm(t); return; }
+    snap();
+    if (act === 'thism' || act === 'nextm') setTxnMonth(t, act === 'nextm' ? 1 : 0);
+    if (act === 'credit' || act === 'debit') setCardType(t.card, act === 'credit' ? 'Credit' : 'Debit');
+    if (act === 'yes') confirmReview(t);
+    if (act === 'salary') t.status = 'income-salary';
+    if (act === 'income') t.status = 'income';
+    if (act === 'ok') { t.status = 'auto'; t.userCat = true; }
+    done();
+  });
+  $('#pDiscard').onclick = () => {
+    if (!pendSel.size) return;
+    snap(); let n = 0;
+    pendSel.forEach(id => { const i = find(id); if (!i) return; if (i.t) { i.t.status = 'ignored'; delete i.t.held; } else a.bills = a.bills.filter(x => x.id !== id); n++; });
+    pendSel.clear(); toast(`${n} discarded`, true); done();
+  };
+  $('#pClear').onclick = () => { a.pendingCleared = Date.now(); try { if (BRIDGE && BRIDGE.clearNotifications) BRIDGE.clearNotifications(); } catch (e) {} save(); render(); pendingSheet(); toast('Reminders cleared'); };
+  $('#pClose').onclick = () => { closeSheet(); render(); };
+};
+// Settings › Monthly tracker
+const trackerSettings = () => {
+  const tr = TRK();
+  form('Monthly tracker', [
+    { k: 'startDay', label: 'Each month starts on day', type: 'select', options: Array.from({ length: 28 }, (_, i) => [String(i + 1), String(i + 1)]), value: String(startDay()) },
+    { k: 'salaryNext', label: 'Salary counts for the month that starts nearest to when it arrives', type: 'checkbox', value: tr.salaryNext !== false },
+    { k: 'help', type: 'html', html: `<p class="muted">With day ${startDay()}, ${esc(mLong(nowKey()))} runs from ${esc(fmtDay(periodStart(nowKey())))} to ${esc(fmtDay(periodEnd(nowKey())))}. Everything that happens from the start day on counts in that month. Changing the day regroups everything at once; nothing is lost.</p>` }
+  ], v => {
+    snap();
+    S.settings.track = { startDay: Math.min(28, Math.max(1, +v.startDay || 1)), salaryNext: !!v.salaryNext };
+    cur = nowKey();
+    if (typeof syncNotesSoon === 'function') syncNotesSoon();
+  });
+};
 const viewBudget = () => {
   $('#top').innerHTML = `<button class="ib" id="prev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 5-7 7 7 7"/></svg></button><h1>${esc(tabName('budget'))} · ${esc(mLabel(cur))}</h1><button class="ib" id="next" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg></button>`;
   $('#prev').onclick = () => { cur = addM(cur, -1); render(); };
@@ -2091,10 +2214,10 @@ const viewBudget = () => {
   const a = ACT(), m = M(), plan = m ? monthCalc(m) : { income: 0, used: 0, left: 0 };
   const inc = actualIncome(cur), spent = actualSpent(cur), left = inc.total - spent;
   const txns = monthTxns(cur).sort((x, y) => y.date.localeCompare(x.date));
-  const needs = txns.filter(t => t.status === 'needs'), check = txns.filter(t => t.status === 'review');
+  const pend = pendingItems(), pbadge = pendingBadge();
   const ignored = txns.filter(t => t.status === 'ignored'), shown = txns.filter(t => t.status !== 'ignored');
-  const ke = cur + '-31';
-  const bills = a.bills.filter(b => (b.date || '').slice(0, 7) === cur || (b.due || '').slice(0, 7) === cur || (b.status !== 'paid' && b.due <= ke && b.date <= ke) || (b.paidDate || '').slice(0, 7) === cur).sort((x, y) => (x.status === 'paid') - (y.status === 'paid') || x.due.localeCompare(y.due));
+  // a bill sits in the month its due date falls in; unpaid ones carry forward (overdue) up to this month
+  const bills = a.bills.filter(b => b.due && b.status !== 'nodue' && (billMonth(b) === cur || (b.status !== 'paid' && billMonth(b) < cur && cur <= nowKey()))).sort((x, y) => (x.status === 'paid') - (y.status === 'paid') || x.due.localeCompare(y.due));
   // plan vs actual by category
   const pc = {}, ac = {};
   if (m) m.expenses.forEach(x => catsOf(x).forEach(c => { pc[c] = (pc[c] || 0) + (+x.amount || 0); }));
@@ -2106,8 +2229,10 @@ const viewBudget = () => {
   const pct = plan.used ? Math.min(100, spent / plan.used * 100) : (spent ? 100 : 0);
   const overall = spent > plan.used && plan.used;
   const billRow = b => { const paid = b.status === 'paid', late = !paid && b.due < today(); return `<button class="row st-${paid ? 'done' : 'pend'}" data-bill="${esc(b.id)}"><span class="mkb" aria-hidden="true"></span><span class="t"><span class="n">${esc(billTitle(b))}${b.review ? ' <span class="chip hot">is this right?</span>' : ''}</span><span class="s">${paid ? `paid ${b.paidAmount ? fmtM(b.paidAmount) : ''}${b.paidDate ? ' on ' + esc(fmtDay(b.paidDate)) : ''}` : `${late ? 'overdue since' : 'due'} ${esc(fmtDay(b.due))}${b.kind === 'statement' ? ' · min ' + fmtM(b.min) : ''}`}${billLine(b) ? ' · ' + esc(billLine(b)) : ''}</span></span><span class="a num ${!paid ? 'neg' : ''}">${fmtM(b.amount)}</span></button>`; };
-  const txRow = t => { const s = spendOf(t), isIn = t.kind === 'salary' || t.status === 'income' || t.status === 'income-salary'; return `<button class="row${t.status === 'ignored' ? ' dim' : ''}" data-txn="${esc(t.id)}"><span class="t"><span class="n">${esc(t.merchant || KLABEL[t.kind] || 'Transaction')}</span><span class="s">${esc(fmtDay(t.date))} · ${isIn ? 'income' : esc(t.cat)}${t.line ? ' · ' + esc(t.line) : ''}${t.status === 'needs' ? ' · <b class="neg">suggested, tap to confirm</b>' : ''}${t.status === 'review' ? ' · <b class="neg">is this right?</b>' : ''}${!s && !isIn && whyNot(t) ? ' · ' + esc(whyNot(t)) : ''}</span></span><span class="a"><span class="num ${s < 0 || isIn ? '' : ''}">${isIn ? '+' : s < 0 ? '−' : ''}${fmtM(t.amount)}</span>${!s && !isIn ? '<span class="s">not counted</span>' : ''}</span></button>`; };
+  const txRow = t => { const s = spendOf(t), isIn = t.kind === 'salary' || t.status === 'income' || t.status === 'income-salary'; return `<button class="row${t.status === 'ignored' ? ' dim' : ''}" data-txn="${esc(t.id)}"><span class="t"><span class="n">${esc(t.merchant || KLABEL[t.kind] || 'Transaction')}</span><span class="s">${esc(fmtDay(t.date))} · ${isIn ? 'income' : esc(t.cat)}${t.line ? ' · ' + esc(t.line) : ''}${t.month ? ' · moved to ' + esc(mLabel(t.month)) : ''}${PENDING[t.status] ? ' · <b class="neg">pending</b>' : ''}${!s && !isIn && whyNot(t) ? ' · ' + esc(whyNot(t)) : ''}</span></span><span class="a"><span class="num ${s < 0 || isIn ? '' : ''}">${isIn ? '+' : s < 0 ? '−' : ''}${fmtM(t.amount)}</span>${!s && !isIn ? '<span class="s">not counted</span>' : ''}</span></button>`; };
   return `${smsSetupCard()}
+  ${startDay() > 1 ? `<p class="muted" style="margin:8px 2px 0">${esc(fmtDay(periodStart(cur)))} – ${esc(fmtDay(periodEnd(cur)))}</p>` : ''}
+  ${pend.length ? `<button class="pendbtn" id="pendBtn" type="button"><span class="pb-ic" aria-hidden="true">!</span><span class="t"><b>Pending actions</b><span class="s">${pend.length} waiting for you · not counted until answered</span></span><span class="num pb-n">${pend.length}</span></button>` : ''}
   <div class="stats" style="margin-top:14px">
     <button class="stat" id="incBtn" style="text-align:left;cursor:pointer"><span>Salary credited</span><b>${fmtM(inc.salary)}</b><span>${inc.manualSalary ? 'entered' : inc.smsSalary ? 'from SMS' : 'tap to enter'}</span></button>
     <button class="stat" id="incBtn2" style="text-align:left;cursor:pointer"><span>Extra cash received</span><b>${fmtM(inc.extras)}</b><span>tap to add</span></button>
@@ -2116,8 +2241,6 @@ const viewBudget = () => {
     <div class="meter" aria-hidden="true"><i style="width:${pct}%${overall ? ';background:var(--acc)' : ''}"></i></div>
     <div class="legend"><span>Planned <b class="num">${fmtM(plan.used)}</b></span><span>${plan.used ? (spent > plan.used ? 'over by ' : 'under by ') + '<b class="num">' + fmtM(r2(Math.abs(plan.used - spent))) + '</b>' : ''}</span></div>
     <p class="muted">Actual left this month: <b class="num ${left < 0 ? 'neg' : ''}">${CUR()} ${fmtM(r2(left))}</b></p></section>
-  ${check.length ? `<h2>Check these<span class="sp"></span><span class="num">${check.length}</span></h2><div class="list">${check.map(txRow).join('')}</div>` : ''}
-  ${needs.length ? `<h2>Needs a category<span class="sp"></span><span class="num">${needs.length}</span></h2><div class="list">${needs.map(txRow).join('')}</div>` : ''}
   <h2>Bills<span class="sp"></span><span class="num">${bills.filter(b => b.status !== 'paid').length} due</span></h2>
   <div class="list">${bills.length ? bills.map(billRow).join('') : '<div class="empty">Bill messages (utility bills, wifi bills, card statements…) show up here with their due dates.</div>'}</div>
   ${lines.length ? `<h2>Plan lines</h2><div class="list bars">${lines.map(x => { const act = la[x.name], pl = +x.amount || 0, over = act > pl; return `<div class="r"><div class="h"><span>${esc(x.name)}</span><span class="num ${over ? 'neg' : ''}">${fmtM(r2(act))} / ${fmtM(pl)}</span></div><div class="track"><i class="${over ? 'over' : ''}" style="width:${pl ? Math.min(100, act / pl * 100) : 100}%"></i></div></div>`; }).join('')}</div>` : ''}
@@ -2134,7 +2257,7 @@ const viewBudget = () => {
 };
 const bindBudget = () => {
   const b = (id, f) => { const el = document.getElementById(id); if (el) el.onclick = f; };
-  b('incBtn', incomeForm); b('incBtn2', incomeForm);
+  b('incBtn', incomeForm); b('incBtn2', incomeForm); b('pendBtn', pendingSheet);
   b('smsSetup', smsSettings);
   b('teachBtn', teachList);
   b('addAct', () => txnForm({ id: uid(), src: 'manual', kind: 'manual', date: cur === nowKey() ? today() : cur + '-01', amount: '', merchant: '', cat: 'Other', line: '', status: 'auto', note: '' }, true));
@@ -2170,9 +2293,9 @@ const smsSettings = () => {
     <label class="f"><span>At</span><input id="sTime" type="time" value="${esc(a.cfg.remindTime)}"></label></div>
     <label class="ck"><input type="checkbox" id="sOnDue" ${a.cfg.remindOnDue ? 'checked' : ''}> Remind again on the due day if it's still not paid</label>
     <label class="ck"><input type="checkbox" id="sNotify" ${a.cfg.notify !== false ? 'checked' : ''}> Notify me for each recorded transaction</label>
-    ${Object.keys(a.map.billers).map(k => `<label class="f"><span>${esc(k)} bills: due this many days after the bill SMS</span><input type="number" inputmode="numeric" data-bdays="${esc(k)}" value="${esc(a.map.billers[k].dueDays || 15)}"></label>`).join('')}
-    ${cards.length ? `<h2>Cards</h2>${cards.map(c => { const cc = a.map.cards[c]; return `<label class="f"><span>Card ${esc(c)}${cc.bank ? ' · ' + esc(cc.bank) : ''}${cc.type ? ' · ' + esc(cc.type.toLowerCase()) : ''}</span><select data-cmode="${esc(c)}"><option value="purchases" ${cardMode(c, cc.type) === 'purchases' ? 'selected' : ''}>Count each purchase</option><option value="payment" ${cardMode(c, cc.type) === 'payment' ? 'selected' : ''}>Count the card bill payment instead</option></select></label>`; }).join('')}
-    <p class="muted">Credit cards start on "bill payment" so spending isn't counted twice (once per purchase and again when you pay the card).</p>` : ''}
+    <p class="muted">A bill message without a due date waits in Pending actions until you set the date.</p>
+    ${cards.length ? `<h2>Cards</h2>${cards.map(c => { const cc = a.map.cards[c]; return `<div class="two"><label class="f"><span>Card ending ${esc(c)}${cc.bank ? ' · ' + esc(cc.bank) : ''}</span><input data-cname="${esc(c)}" maxlength="30" value="${esc(cc.name || '')}" placeholder="Name, e.g. Salary debit card"></label><label class="f"><span>Type</span><select data-ctype="${esc(c)}"><option value="" ${!cc.type ? 'selected' : ''}>Not sure yet</option><option value="Debit" ${cc.type === 'Debit' ? 'selected' : ''}>Debit card</option><option value="Credit" ${cc.type === 'Credit' ? 'selected' : ''}>Credit card</option></select></label></div>`; }).join('')}
+    <p class="muted">Cards are added by themselves from your bank SMS. Debit card spending counts in the month it happens; for a credit card purchase the app asks which month it belongs to, and paying the card's bill doesn't count again.</p>` : ''}
     <div class="btns"><button class="btn pri" type="submit">Save</button><button class="btn" type="button" id="sClose">Close</button></div></form>`;
   $('#veil').classList.add('on');
   const bb = (id, f) => { const el = document.getElementById(id); if (el) el.onclick = f; };
@@ -2187,8 +2310,8 @@ const smsSettings = () => {
     e.preventDefault(); snap();
     a.cfg.remindDays = Math.max(0, Math.round(+$('#sDays').value || 0)); a.cfg.remindTime = $('#sTime').value || '09:00';
     a.cfg.remindOnDue = $('#sOnDue').checked; a.cfg.notify = $('#sNotify').checked;
-    document.querySelectorAll('[data-bdays]').forEach(i => { a.map.billers[i.dataset.bdays].dueDays = Math.max(1, Math.round(+i.value || 15)); });
-    document.querySelectorAll('[data-cmode]').forEach(s2 => { a.map.cards[s2.dataset.cmode].mode = s2.value; });
+    document.querySelectorAll('[data-cname]').forEach(i => { a.map.cards[i.dataset.cname].name = i.value.trim().slice(0, 30); });
+    document.querySelectorAll('[data-ctype]').forEach(s2 => { const c = s2.dataset.ctype, v = s2.value; if (v && v !== a.map.cards[c].type) setCardType(c, v); else if (!v) a.map.cards[c].type = ''; });
     save(); syncNative(); closeSheet(); render(); toast('Saved');
   };
 };
@@ -2457,6 +2580,7 @@ const ICONS = {
   close: 'M6 6l12 12M18 6 6 18',
   ban: 'M12 3a9 9 0 1 0 .01 0M5.6 5.6l12.8 12.8',
   open: 'M14 4h6v6M20 4l-9 9M18 14v6H4V6h6',
+  next: 'M5 12h14M13 6l6 6-6 6',
   dots: 'M5 12h.01M12 12h.01M19 12h.01'
 };
 const icon = (name, cls) => `<svg class="ic ${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${ICONS[name] || ICONS.dots}"/></svg>`;
@@ -2691,7 +2815,7 @@ const atMs = (ymd, time) => { const [y, mo, d] = ymd.split('-').map(Number), [h,
 const mins = s => { const [h, m] = hm(s); return h * 60 + m; };
 const DOWS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 // buttons on transaction notifications (Settings › Notifications › Action buttons)
-const ACT_DEFS = [['cat', 'Change category', 'tag', '#2f6fd6'], ['other', 'Save as Other', 'check', '#0b7a5c'], ['sav', 'Savings', 'piggy', '#b7791f'], ['ignore', 'Not a transaction', 'ban', '#e0365f'], ['open', 'Open in the app', 'open', '#6b7a85']];
+const ACT_DEFS = [['cat', 'Change category', 'tag', '#2f6fd6'], ['other', 'Save as Other', 'check', '#0b7a5c'], ['sav', 'Savings', 'piggy', '#b7791f'], ['ignore', 'Not a transaction', 'ban', '#e0365f'], ['nextm', 'Next month', 'next', '#7a4fd1'], ['open', 'Open in the app', 'open', '#6b7a85']];
 const notifActs = () => {
   const saved = (S.settings.notifActs || {}).list || [];
   const list = saved.filter(x => ACT_DEFS.some(d => d[0] === x.id)).map(x => Object.assign({}, x));
@@ -2750,10 +2874,10 @@ const buildNotes = () => {
   const n = NOTIF(), out = [], now = Date.now(), td = today(), mk = nowKey();
   const add = (id, ymd, time, title, text, open, dyn) => { const at = atMs(ymd, time); if (at > now + 30000) out.push({ id, at, title, text, open: open || '', dyn: dyn || '' }); };
   if (!n.on) return out;
-  if (n.uncat) for (let i = 0; i < 7; i++) { const d = addDays(td, i); add('uncat-' + d, d, n.uncatTime, 'Transactions to sort', '', 'budget', 'uncat'); }
-  const [y, m] = mk.split('-').map(Number), last = new Date(y, m, 0).getDate(), lastDay = mk + '-' + String(last).padStart(2, '0');
+  if (n.uncat) for (let i = 0; i < 7; i++) { const d = addDays(td, i); add('uncat-' + d, d, n.uncatTime, 'Pending actions', '', 'budget', 'uncat'); }
+  const lastDay = periodEnd(mk); // last day of this tracking month
   if (n.monthEnd) add('monthend-' + mk, lastDay, '19:00', `${mLabel(mk)} ends today`, '', 'budget', 'monthEnd');
-  if (n.newMonth) { const nk = addM(mk, 1); add('newmonth-' + nk, nk + '-01', '09:00', `${mLabel(nk)} has started`, `Set up its plan on the ${tabName('month')} tab.`, 'month'); }
+  if (n.newMonth) { const nk = addM(mk, 1); add('newmonth-' + nk, periodStart(nk), '09:00', `${mLabel(nk)} has started`, `Set up its plan on the ${tabName('month')} tab.`, 'month'); }
   if (n.owed) {
     const d = ffDebts();
     if (d.oweAED > 0.5 || d.owedAED > 0.5) {
@@ -2781,9 +2905,9 @@ const notesSnapshot = () => {
   let spent = 0, uncat = 0;
   try {
     monthTxns(nowKey()).forEach(t => { const s = spendOf(t); if (s) { const c = t.cat || 'Other'; cats[c] = cats[c] || { plan: 0, spent: 0 }; cats[c].spent += s; spent += s; } });
-    uncat = ACT().txns.filter(t => t.status === 'needs' || t.status === 'review').length;
+    uncat = pendingItems().length;
   } catch (e) {}
-  const cards = {}; try { const a = ACT(); for (const k in a.map.cards) cards[k] = cardMode(k, a.map.cards[k].type || 'Credit'); } catch (e) {}
+  const cards = {}; try { const a = ACT(); for (const k in a.map.cards) cards[k] = a.map.cards[k].type || ''; } catch (e) {}
   // for the summaries: recent spends, open bills, savings and money owed, and last month's figures
   const from = addDays(today(), -40), txns = [], bills = [];
   try {
@@ -2795,7 +2919,8 @@ const notesSnapshot = () => {
   let pSpent = 0; try { pSpent = r2(actualSpent(pk)); } catch (e) {}
   const prev = { month: pk, label: mLong(pk), plan: pm ? monthCalc(pm).used || 0 : 0, spent: pSpent, saved: saved(pk) };
   let owe = 0, owed = 0; try { const d = ffDebts(); owe = r2(d.oweAED); owed = r2(d.owedAED); } catch (e) {}
-  return { month: nowKey(), label: mLong(nowKey()), cats, plan: plan.used || 0, spent, uncat, cards, cur: MAIN(), rate: conv(1, 'AED', MAIN()), txns, bills, saved: saved(nowKey()), prev, owe, owed };
+  const ps = new Date(periodStart(nowKey()) + 'T00:00').getTime(), pe = new Date(periodEnd(nowKey()) + 'T00:00').getTime() + 864e5;
+  return { month: nowKey(), start: ps, end: pe, startDay: startDay(), label: mLong(nowKey()), cats, plan: plan.used || 0, spent, uncat, cards, cur: MAIN(), rate: conv(1, 'AED', MAIN()), txns, bills, saved: saved(nowKey()), prev, owe, owed };
 };
 
 let notesTimer = 0;
@@ -2807,7 +2932,7 @@ const syncNotes = () => {
     b.syncNotes(JSON.stringify({
       settings: { on: n.on, overspend: n.overspend, near: n.near, monthOver: n.monthOver, big: n.big, bigAmt: +n.bigAmt || 0, lowBal: n.lowBal, lowAmt: +n.lowAmt || 0,
         overdue: n.overdue, salary: n.salary, quiet: n.quiet, qFrom: qfh * 60 + qfm, qTo: qth * 60 + qtm,
-        sum: { daily: { on: !!n.sumDaily, min: mins(n.sumDailyTime) }, weekly: { on: !!n.sumWeekly, dow: +n.sumWeeklyDow || 0, min: mins(n.sumWeeklyTime) }, monthly: { on: !!n.sumMonthly, when: n.sumMonthlyWhen === 'first' ? 'first' : 'last', min: mins(n.sumMonthlyTime) } } },
+        sum: { daily: { on: !!n.sumDaily, min: mins(n.sumDailyTime) }, weekly: { on: !!n.sumWeekly, dow: +n.sumWeeklyDow || 0, min: mins(n.sumWeeklyTime) }, monthly: { on: !!n.sumMonthly, when: n.sumMonthlyWhen === 'first' ? 'first' : 'last', min: mins(n.sumMonthlyTime), startDay: startDay() } } },
       snap: notesSnapshot(), schedule: buildNotes() }));
   } catch (e) {}
 };
@@ -2829,7 +2954,7 @@ const notifSettings = () => {
       ${tg('monthOver', 'Whole month over plan', 'Total spending passes the plan')}
       ${tg('big', 'Big transaction', 'One spend at or above the limit')}
       ${tg('lowBal', 'Low account balance', 'An SMS shows a balance under the limit')}
-      ${tg('uncat', 'Transactions to sort', 'Once a day, if anything needs a category')}
+      ${tg('uncat', 'Pending actions reminder', 'Once a day, if anything is waiting for you')}
     </div>
     <div style="display:flex;gap:10px">${num('bigAmt', 'Big transaction from')}${num('lowAmt', 'Low balance under')}</div>
     <div style="display:flex;gap:10px">${tm('uncatTime', 'Daily reminder at')}</div>
@@ -3397,7 +3522,7 @@ $('#fileJ').addEventListener('change', async e => {
   if (!backupOK(d)) { toast(DAMAGED); return; }
   snap(); S = Object.assign(blank(), d); save(); render(); toast('Backup restored', true);
 });
-const CHANGELOG = [{"version": 21, "date": "2026-11-27T10:00:00+04:00", "changes": ["Updated the Excel reader to the latest secure version; importing and exporting work as before"]}, {"version": 20, "date": "2026-11-26T17:30:00+04:00", "changes": ["Restoring a backup now checks the whole file first; a damaged or altered backup is refused and your data stays as it is"]}, {"version": 19, "date": "2026-11-26T17:15:00+04:00", "changes": ["A bank message you share into the app is recorded straight away (with Undo), but no longer marks a bill paid or a plan line done by itself: open it and tap Mark \u2026 paid / done"]}, {"version": 18, "date": "2026-11-26T15:00:00+04:00", "changes": ["App 1.11: updates now come from a separate releases page, so the app's code can be kept private"]}, {"version": 17, "date": "2026-11-26T14:10:00+04:00", "changes": ["App 1.10: fixed the header and tab bar sitting under the phone's status bar and navigation buttons (from 1.9)"]}, {"version": 16, "date": "2026-11-26T19:00:00+04:00", "changes": ["App 1.9: screen updates must carry a valid signature before the app installs them", "App 1.9: the app's pages can no longer load anything from the internet or open outside links (only GitHub)", "App 1.9: PIN and pattern are checked by the phone's secure hardware (Android Keystore); wrong tries are counted there too. Your existing PIN moves over the first time you unlock", "App 1.9: automatic daily backups are kept privately inside the app; backups you save yourself still go to Downloads", "App 1.9: ready for Android 16 (new back-button handling, full-screen layout with the bar colours matching your theme)", "App 1.9: share a bank SMS to the app (Messages \u203a long-press \u203a Share \u203a Monthly Budget) to record it", "App 1.9: smaller, obfuscated app; stricter checks on links opened from notifications; pinned build steps"]}, {"version": 15, "date": "2026-11-26T17:20:00+04:00", "changes": ["The app asks again before recording similar transactions under the same category: '3 similar transactions found. Record them under Groceries too?'", "Learned rules ask the same way when earlier transactions match"]}, {"version": 14, "date": "2026-11-26T17:00:00+04:00", "changes": ["Fixed: transactions kept showing under 'Needs a category' after their category was set (shop rules, learned rules and taught messages now clear it)", "Transactions read by a taught pattern now sit in their own 'Check these' list; saving one counts as 'yes, it's right'", "Suggested categories are marked 'suggested, tap to confirm'"]}, {"version": 13, "date": "2026-11-26T16:30:00+04:00", "changes": ["Shop rules: 'Always use this category' now matches a keyword (e.g. NESTO) so every branch is caught, not just the exact name", "After making a rule, update earlier matching transactions in one tap", "The app learns a rule by itself when you put the same shop in the same category twice (with Undo)", "Settings \u203a Bank SMS & bills \u203a Shop rules: see, edit, add or delete rules", "App 1.8: notifications use the same shop rules; screen updates show 'Update ready \u00b7 Restart now' and apply without closing the app"]}, {"version": 12, "date": "2026-11-26T15:00:00+04:00", "changes": ["Tabs renamed: Month is now Budget and Budget is now Monthly. Rename any tab and change its icon in Settings \u203a Appearance", "Category picker on the Monthly tab now matches the Budget tab: icon, name and tick box", "Pencil button next to every category picker: add, rename, or change icon and colour without leaving the form", "Transactions and savings: mark a transaction as moved into savings (a deposit) or paid from savings (a withdrawal); you choose whether it counts in the month's spending", "App 1.7: notification buttons as icons (category, savings, save as Other, not a transaction, open); choose which show, their order, icon and colour in Settings \u203a Notifications \u203a Notification buttons", "Daily, weekly and monthly summaries, each with its own day and time"]}, {"version": 11, "date": "2026-11-26T12:00:00+04:00", "changes": ["App 1.6: a backup is saved automatically each day you change something; the newest 10 days are kept and older automatic copies are removed", "After a reset, the app offers to restore the latest backup in one tap", "Settings \u203a Security \u203a Backups on this phone: see the saved copies and restore any of them", "Update prompt always points to the newest app version, even if you've skipped several"]}, {"version": 10, "date": "2026-11-26T10:00:00+04:00", "changes": ["Security: no email needed any more. Set a PIN or pattern straight away", "Forgot your PIN or pattern? Try again, or reset the app and restore your latest backup (the weekly auto backup in Downloads)", "Security settings show when the last weekly auto backup was saved"]}, {"version": 9, "date": "2026-11-26T00:30:00+04:00", "changes": ["'More' is now 'Settings'", "Appearance: light, dark or phone theme, accent colour, five font styles, text size, tab icons and their style, compact rows, square or round corners, start tab, show or hide cents", "Categories: add, rename, reorder or delete them with an icon and colour, from the Month tab or Settings; shared by Month and Budget, picked from a drop-down with tick boxes", "Main currency set once in Settings and used across every tab; amounts typed in another currency are converted and keep the original amount as a note on the line", "Press back twice to exit (can be switched off)", "Income lines on the Month tab are plain, without colours or ticks", "Security: PIN, pattern or fingerprint lock, with a recovery email verified by a code; forgot your PIN? reset it with a code sent to that email", "Notifications: category over or close to plan, month over plan, big spends, low balance, transactions to sort, overdue bills, EMI days, month end, new month, savings goals, money owed, backup reminder, and quiet hours", "App 1.5: fingerprint unlock, email codes, hide the app in recent apps, and the warnings and reminders above"]}, {"version": 8, "date": "2026-11-25T20:58:00+04:00", "changes": ["Teach the app: pick a message it couldn't read (or paste one), tap the amount, name and due date, choose what it is; similar messages are read from then on", "Types you can teach: spending, refund, salary, extra cash received, bill due, card statement, card bill payment, or 'Not money' to ignore similar messages", "The first 3 messages read with a new pattern ask 'Is this right?' (Yes / Fix) before the pattern is trusted", "Ignored messages are kept in a hidden list under Budget \u203a Transactions, where you can record them again", "Taught messages listed in More \u203a Bank SMS & bills, where you can edit or delete them", "App 1.4: the phone uses your taught patterns as soon as an SMS arrives, and reads dates like '5 Jan 2027'"]}, {"version": 7, "date": "2026-11-25T19:48:00+04:00", "changes": ["Budget tab is now your actual spending: Salary credited and Extra cash received at the top, Actually spent vs planned, actual left, and a month-end plan vs actual table", "With app 1.3: bank and biller SMS are read on the phone and recorded automatically (card purchases, refunds, card payments, salary); new merchants and unreadable messages ask for a category or 'Not a transaction' from the notification", "Bills section: utility bills and card statements with due dates; paid automatically when the payment SMS arrives, or by hand; linked plan lines turn green", "Read past SMS: choose 2 to 6 months in More \u203a Bank SMS & bills; reminders a set number of days before the due date and on the day", "Credit cards: by default the card bill payment counts, not each purchase, so nothing is counted twice (changeable per card)", "Month tab: Actually spent so far card; every income and expense line can be marked done or pending, with All / Pending / Done filter and a done count", "More \u203a Done / pending marking: coloured blocks, green line through, coloured edge or tick only, with your choice of colours", "Instalment SMS can be added to Loans with one tap"]}, {"version": 6, "date": "2026-11-25T15:29:00+04:00", "changes": ["New Savings tab: pots for each goal (target amount and date) or open savings, in any currency", "Deposits, withdrawals (spending from savings, with a category) and moves between pots", "Goal progress with the amount still needed and how much to save each month to hit the date", "Overview with total savings, timeline filtered by week, month, year or all; Calendar view; Statistics with charts, per-pot and per-category breakdowns", "Eye button hides amounts; Export PDF for one pot or all savings; Savings sheet in the Excel export", "Month tab: Savings section at the bottom (total, saved and spent this month) that opens the Savings tab; 'Total cash savings' renamed 'Cash left & carried'", "Tabs are now Month, F&F, Savings, Budget, More; Loans opens from a button above the + on the Month tab", "Import a savings file (More \u203a Restore, or the Savings tab when it's empty); importing the same file twice skips entries already there"]}, {"version": 5, "date": "2026-11-25T14:54:00+04:00", "changes": ["F&F groups: Export PDF next to Copy summary, with balances, settle-up payments and every entry with its details", "PDFs and Excel exports can be shared straight to WhatsApp, Gmail or Drive, or saved to Downloads/MonthlyBudget (Share needs app 1.2)", "App 1.2: adds the Share option and saves PDFs as proper PDF files"]}, {"version": 4, "date": "2026-11-25T14:33:00+04:00", "changes": ["Family tab replaced by Family & friends (F&F): groups for trips, flatmates, cousins or one person, with everything Splid does", "Group entries: expenses (one or several payers; split equally, by exact amounts, by shares or by percentage), money given (loans, repayments) and income (refunds)", "Any currency per entry with its own exchange rate; groups settle in the currency you choose", "Balances per person, Settle up with the fewest payments, and a Paid button that records each settlement", "Copy summary for WhatsApp, archive or delete groups, Excel export has a sheet per group", "Month tab: new Money owed card (what you owe family & friends) that opens the Money I owe list; Total debt renamed Loans outstanding and now counts loans only", "Your earlier family entries moved into their own group per person (e.g. Hisana)", "More: Exchange rates for all currencies, with the Gulf pegs preset"]}, {"version": 3, "date": "2026-11-25T13:39:00+04:00", "changes": ["Loans: new \"EMI deducted on (day of month)\" field and a \"Deducted automatically every month\" tick box", "Loans marked as automatic log their EMI by themselves on that day and add it to the month's expenses; starts from the next EMI day, nothing is back-filled", "Loans: \"EMIs paid before using the app\" and \"Amount paid before the app\" are now simply \"EMIs paid\" and \"Amount paid\" (totals)", "More: version shows when it was last updated; tap it for this log", "Dates now follow Dubai time instead of UTC"]}, {"version": 2, "date": "2026-11-25T13:12:00+04:00", "changes": ["Expenses can carry several categories, e.g. Housing + Loans & EMIs", "Monthly EMIs on the Month tab is the total of expenses tagged Loans & EMIs", "Budget: an expense in two categories counts in each bar but once in the total", "Excel export lists all of a line's categories"]}, {"version": 1, "date": "2026-11-25T12:50:00+04:00", "changes": ["First release: monthly income and expenses, loans and EMIs in AED and INR, family credit, budget by category", "Import from the Excel workbook, export to Excel with working formulas", "Weekly automatic backup to Downloads/MonthlyBudget"]}];
+const CHANGELOG = [{"version": 22, "date": "2026-11-27T13:00:00+04:00", "changes": ["Monthly tracker: each month starts on the day you choose (Settings \u203a Monthly tracker, set to 27). Everything from that day on counts in the next month", "Salary counts for the month that starts nearest to the day it arrives (27 Nov salary \u2192 December)", "Move any transaction to the previous or next month from the transaction, or with Next month on the notification", "Bills sit in the month their due date falls in and carry forward while unpaid. A bill message without a due date asks you to set it", "Credit card purchases ask which month they count in; debit card purchases count straight away; paying the card's bill doesn't count again", "New card: the app asks once whether it's credit or debit. Name your cards in Settings \u203a Bank SMS & bills", "Pending actions: anything the app isn't sure about waits there, not counted, with a count on the Monthly tab, Discard and Clear reminders", "App 1.12: notification buttons for salary and money in, credit card month, new card type and missing due dates"]}, {"version": 21, "date": "2026-11-27T10:00:00+04:00", "changes": ["Updated the Excel reader to the latest secure version; importing and exporting work as before"]}, {"version": 20, "date": "2026-11-26T17:30:00+04:00", "changes": ["Restoring a backup now checks the whole file first; a damaged or altered backup is refused and your data stays as it is"]}, {"version": 19, "date": "2026-11-26T17:15:00+04:00", "changes": ["A bank message you share into the app is recorded straight away (with Undo), but no longer marks a bill paid or a plan line done by itself: open it and tap Mark \u2026 paid / done"]}, {"version": 18, "date": "2026-11-26T15:00:00+04:00", "changes": ["App 1.11: updates now come from a separate releases page, so the app's code can be kept private"]}, {"version": 17, "date": "2026-11-26T14:10:00+04:00", "changes": ["App 1.10: fixed the header and tab bar sitting under the phone's status bar and navigation buttons (from 1.9)"]}, {"version": 16, "date": "2026-11-26T19:00:00+04:00", "changes": ["App 1.9: screen updates must carry a valid signature before the app installs them", "App 1.9: the app's pages can no longer load anything from the internet or open outside links (only GitHub)", "App 1.9: PIN and pattern are checked by the phone's secure hardware (Android Keystore); wrong tries are counted there too. Your existing PIN moves over the first time you unlock", "App 1.9: automatic daily backups are kept privately inside the app; backups you save yourself still go to Downloads", "App 1.9: ready for Android 16 (new back-button handling, full-screen layout with the bar colours matching your theme)", "App 1.9: share a bank SMS to the app (Messages \u203a long-press \u203a Share \u203a Monthly Budget) to record it", "App 1.9: smaller, obfuscated app; stricter checks on links opened from notifications; pinned build steps"]}, {"version": 15, "date": "2026-11-26T17:20:00+04:00", "changes": ["The app asks again before recording similar transactions under the same category: '3 similar transactions found. Record them under Groceries too?'", "Learned rules ask the same way when earlier transactions match"]}, {"version": 14, "date": "2026-11-26T17:00:00+04:00", "changes": ["Fixed: transactions kept showing under 'Needs a category' after their category was set (shop rules, learned rules and taught messages now clear it)", "Transactions read by a taught pattern now sit in their own 'Check these' list; saving one counts as 'yes, it's right'", "Suggested categories are marked 'suggested, tap to confirm'"]}, {"version": 13, "date": "2026-11-26T16:30:00+04:00", "changes": ["Shop rules: 'Always use this category' now matches a keyword (e.g. NESTO) so every branch is caught, not just the exact name", "After making a rule, update earlier matching transactions in one tap", "The app learns a rule by itself when you put the same shop in the same category twice (with Undo)", "Settings \u203a Bank SMS & bills \u203a Shop rules: see, edit, add or delete rules", "App 1.8: notifications use the same shop rules; screen updates show 'Update ready \u00b7 Restart now' and apply without closing the app"]}, {"version": 12, "date": "2026-11-26T15:00:00+04:00", "changes": ["Tabs renamed: Month is now Budget and Budget is now Monthly. Rename any tab and change its icon in Settings \u203a Appearance", "Category picker on the Monthly tab now matches the Budget tab: icon, name and tick box", "Pencil button next to every category picker: add, rename, or change icon and colour without leaving the form", "Transactions and savings: mark a transaction as moved into savings (a deposit) or paid from savings (a withdrawal); you choose whether it counts in the month's spending", "App 1.7: notification buttons as icons (category, savings, save as Other, not a transaction, open); choose which show, their order, icon and colour in Settings \u203a Notifications \u203a Notification buttons", "Daily, weekly and monthly summaries, each with its own day and time"]}, {"version": 11, "date": "2026-11-26T12:00:00+04:00", "changes": ["App 1.6: a backup is saved automatically each day you change something; the newest 10 days are kept and older automatic copies are removed", "After a reset, the app offers to restore the latest backup in one tap", "Settings \u203a Security \u203a Backups on this phone: see the saved copies and restore any of them", "Update prompt always points to the newest app version, even if you've skipped several"]}, {"version": 10, "date": "2026-11-26T10:00:00+04:00", "changes": ["Security: no email needed any more. Set a PIN or pattern straight away", "Forgot your PIN or pattern? Try again, or reset the app and restore your latest backup (the weekly auto backup in Downloads)", "Security settings show when the last weekly auto backup was saved"]}, {"version": 9, "date": "2026-11-26T00:30:00+04:00", "changes": ["'More' is now 'Settings'", "Appearance: light, dark or phone theme, accent colour, five font styles, text size, tab icons and their style, compact rows, square or round corners, start tab, show or hide cents", "Categories: add, rename, reorder or delete them with an icon and colour, from the Month tab or Settings; shared by Month and Budget, picked from a drop-down with tick boxes", "Main currency set once in Settings and used across every tab; amounts typed in another currency are converted and keep the original amount as a note on the line", "Press back twice to exit (can be switched off)", "Income lines on the Month tab are plain, without colours or ticks", "Security: PIN, pattern or fingerprint lock, with a recovery email verified by a code; forgot your PIN? reset it with a code sent to that email", "Notifications: category over or close to plan, month over plan, big spends, low balance, transactions to sort, overdue bills, EMI days, month end, new month, savings goals, money owed, backup reminder, and quiet hours", "App 1.5: fingerprint unlock, email codes, hide the app in recent apps, and the warnings and reminders above"]}, {"version": 8, "date": "2026-11-25T20:58:00+04:00", "changes": ["Teach the app: pick a message it couldn't read (or paste one), tap the amount, name and due date, choose what it is; similar messages are read from then on", "Types you can teach: spending, refund, salary, extra cash received, bill due, card statement, card bill payment, or 'Not money' to ignore similar messages", "The first 3 messages read with a new pattern ask 'Is this right?' (Yes / Fix) before the pattern is trusted", "Ignored messages are kept in a hidden list under Budget \u203a Transactions, where you can record them again", "Taught messages listed in More \u203a Bank SMS & bills, where you can edit or delete them", "App 1.4: the phone uses your taught patterns as soon as an SMS arrives, and reads dates like '5 Jan 2027'"]}, {"version": 7, "date": "2026-11-25T19:48:00+04:00", "changes": ["Budget tab is now your actual spending: Salary credited and Extra cash received at the top, Actually spent vs planned, actual left, and a month-end plan vs actual table", "With app 1.3: bank and biller SMS are read on the phone and recorded automatically (card purchases, refunds, card payments, salary); new merchants and unreadable messages ask for a category or 'Not a transaction' from the notification", "Bills section: utility bills and card statements with due dates; paid automatically when the payment SMS arrives, or by hand; linked plan lines turn green", "Read past SMS: choose 2 to 6 months in More \u203a Bank SMS & bills; reminders a set number of days before the due date and on the day", "Credit cards: by default the card bill payment counts, not each purchase, so nothing is counted twice (changeable per card)", "Month tab: Actually spent so far card; every income and expense line can be marked done or pending, with All / Pending / Done filter and a done count", "More \u203a Done / pending marking: coloured blocks, green line through, coloured edge or tick only, with your choice of colours", "Instalment SMS can be added to Loans with one tap"]}, {"version": 6, "date": "2026-11-25T15:29:00+04:00", "changes": ["New Savings tab: pots for each goal (target amount and date) or open savings, in any currency", "Deposits, withdrawals (spending from savings, with a category) and moves between pots", "Goal progress with the amount still needed and how much to save each month to hit the date", "Overview with total savings, timeline filtered by week, month, year or all; Calendar view; Statistics with charts, per-pot and per-category breakdowns", "Eye button hides amounts; Export PDF for one pot or all savings; Savings sheet in the Excel export", "Month tab: Savings section at the bottom (total, saved and spent this month) that opens the Savings tab; 'Total cash savings' renamed 'Cash left & carried'", "Tabs are now Month, F&F, Savings, Budget, More; Loans opens from a button above the + on the Month tab", "Import a savings file (More \u203a Restore, or the Savings tab when it's empty); importing the same file twice skips entries already there"]}, {"version": 5, "date": "2026-11-25T14:54:00+04:00", "changes": ["F&F groups: Export PDF next to Copy summary, with balances, settle-up payments and every entry with its details", "PDFs and Excel exports can be shared straight to WhatsApp, Gmail or Drive, or saved to Downloads/MonthlyBudget (Share needs app 1.2)", "App 1.2: adds the Share option and saves PDFs as proper PDF files"]}, {"version": 4, "date": "2026-11-25T14:33:00+04:00", "changes": ["Family tab replaced by Family & friends (F&F): groups for trips, flatmates, cousins or one person, with everything Splid does", "Group entries: expenses (one or several payers; split equally, by exact amounts, by shares or by percentage), money given (loans, repayments) and income (refunds)", "Any currency per entry with its own exchange rate; groups settle in the currency you choose", "Balances per person, Settle up with the fewest payments, and a Paid button that records each settlement", "Copy summary for WhatsApp, archive or delete groups, Excel export has a sheet per group", "Month tab: new Money owed card (what you owe family & friends) that opens the Money I owe list; Total debt renamed Loans outstanding and now counts loans only", "Your earlier family entries moved into their own group per person (e.g. Hisana)", "More: Exchange rates for all currencies, with the Gulf pegs preset"]}, {"version": 3, "date": "2026-11-25T13:39:00+04:00", "changes": ["Loans: new \"EMI deducted on (day of month)\" field and a \"Deducted automatically every month\" tick box", "Loans marked as automatic log their EMI by themselves on that day and add it to the month's expenses; starts from the next EMI day, nothing is back-filled", "Loans: \"EMIs paid before using the app\" and \"Amount paid before the app\" are now simply \"EMIs paid\" and \"Amount paid\" (totals)", "More: version shows when it was last updated; tap it for this log", "Dates now follow Dubai time instead of UTC"]}, {"version": 2, "date": "2026-11-25T13:12:00+04:00", "changes": ["Expenses can carry several categories, e.g. Housing + Loans & EMIs", "Monthly EMIs on the Month tab is the total of expenses tagged Loans & EMIs", "Budget: an expense in two categories counts in each bar but once in the total", "Excel export lists all of a line's categories"]}, {"version": 1, "date": "2026-11-25T12:50:00+04:00", "changes": ["First release: monthly income and expenses, loans and EMIs in AED and INR, family credit, budget by category", "Import from the Excel workbook, export to Excel with working formulas", "Weekly automatic backup to Downloads/MonthlyBudget"]}];
 const WEB_VERSION = CHANGELOG.length ? CHANGELOG[0].version : 0;
 // remember when this phone first ran each screens version
 let seenAt = null;
@@ -3436,6 +3561,7 @@ const viewMore = () => {
     <button class="row" id="mNot"><span class="t"><span class="n">Notifications</span><span class="s">${NOTIF().on ? 'Warnings, reminders and quiet hours' : 'Off'}</span></span><span class="a" aria-hidden="true">›</span></button></div>
     <h2>Settings</h2>
     <div class="list"><button class="row" id="mSms"><span class="t"><span class="n">Bank SMS &amp; bills</span><span class="s">SMS reading, past messages, reminders, cards</span></span><span class="a" aria-hidden="true">›</span></button>
+    <button class="row" id="mTrack"><span class="t"><span class="n">Monthly tracker</span><span class="s">Month starts on day ${startDay()}${startDay() > 1 ? ` · ${esc(mLabel(nowKey()))}: ${esc(fmtDay(periodStart(nowKey())))} – ${esc(fmtDay(periodEnd(nowKey())))}` : ''}</span></span><span class="a" aria-hidden="true">›</span></button>
     <button class="row" id="mMark"><span class="t"><span class="n">Done / pending marking</span><span class="s">Coloured blocks, green line, edge or tick</span></span><span class="a" aria-hidden="true">›</span></button>
     <button class="row" id="mRate"><span class="t"><span class="n">Exchange rates</span><span class="s">Per 1 AED · INR ${esc(S.settings.inrRate)} is used for INR loans; all are used in family &amp; friends groups</span></span><span class="a" aria-hidden="true">›</span></button>
     <button class="row" id="mWipe"><span class="t"><span class="n" style="color:var(--acc)">Erase all data</span></span></button></div>
@@ -3454,6 +3580,7 @@ const bindMore = () => {
   $('#mCur').onclick = currencySettings;
   $('#mBack').onchange = e => { S.settings.look = Object.assign(look(), { backExit: e.target.checked }); save(); };
   $('#mMark').onclick = markSettings;
+  $('#mTrack').onclick = trackerSettings;
   $('#mSec').onclick = securitySettings;
   $('#mNot').onclick = notifSettings;
   $('#mBak').onclick = backup;
@@ -3479,6 +3606,8 @@ const render = () => {
   VIEWS[v][1]();
   const tab = v === 'loans' ? 'month' : v;
   document.querySelectorAll('#tabs a').forEach(a => { if (a.dataset.v === tab) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  // small count on the Monthly tab while something waits for you
+  try { const ta = document.querySelector('#tabs a[data-v="budget"]'), n = pendingBadge(); if (ta) { let bd = ta.querySelector('.tbadge'); if (n) { if (!bd) { bd = document.createElement('span'); bd.className = 'tbadge'; ta.appendChild(bd); } bd.textContent = n > 99 ? '99+' : String(n); bd.setAttribute('aria-label', n + ' pending'); } else if (bd) bd.remove(); } } catch (e) {}
   $('#fab2').style.display = v === 'month' ? '' : 'none';
   const g = v === 'family' && ffGroup && gById(ffGroup);
   $('#fab').style.display = (v === 'month' && M()) || g || v === 'budget' ? '' : 'none';
@@ -3538,7 +3667,7 @@ setTimeout(syncNotes, 2500);
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { autoEmiCheck(); if (processQueue() && !locked) render(); syncNotesSoon(); } });
 // Android back button: close an open sheet first, then go back to Month, then leave
 window.__back = () => { if (locked) return false; if ($('#veil2').classList.contains('on')) { closeCats(); return true; } if ($('#veil').classList.contains('on')) { closeSheet(); return true; } if (curView() === 'family' && ffGroup) { ffGroup = null; render(); return true; } if (curView() === 'savings' && (savPot || savView !== 'home')) { if (savPot) savPot = null; else savView = 'home'; render(); return true; } const v = location.hash.slice(1); if (v && v !== 'month' && v !== look().startTab) { location.hash = look().startTab || 'month'; return true; } return backExitCheck(); };
-window.__app = { get S() { return S; }, render, ff: { groupCalc, settlePlan, allocate, ffDebts }, sav: { potCalc, statsFor, totalSavingsAED }, act: { processEvent, actualSpent, actualIncome, spendOf, buildPattern, applyRule, tokenize, normDateJS } };
+window.__app = { get S() { return S; }, render, ff: { groupCalc, settlePlan, allocate, ffDebts }, sav: { potCalc, statsFor, totalSavingsAED }, act: { processEvent, actualSpent, actualIncome, spendOf, buildPattern, applyRule, tokenize, normDateJS, txnMonth, billMonth, pendingItems } };
 }
 </script>
 </body>
