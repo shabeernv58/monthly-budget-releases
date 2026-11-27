@@ -1,5 +1,5 @@
 {
-  "version": 20,
+  "version": 21,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -19,6 +19,6 @@
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
   "apk": 11,
-  "note": "Restoring a backup now checks the whole file first; a damaged or altered backup is refused and your data stays as it is",
+  "note": "Updated the Excel reader to the latest secure version; importing and exporting work as before",
   "minApk": 0
 }
