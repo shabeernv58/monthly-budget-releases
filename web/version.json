@@ -1,5 +1,5 @@
 {
-  "version": 23,
+  "version": 24,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -19,6 +19,6 @@
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
   "apk": 13,
-  "note": "Bills: tick a bill to mark it paid (with Undo); paid bills leave the list, View all shows them; the pencil edits a bill; Pending actions: a ! button above the + on the Monthly tab instead of the banner; Built-in shop words (supermarket, restaurant, clinic, pharmacy, petrol, parking, salon\u2026) set the ",
+  "note": "Pop-ups always open at the top, even if the previous one was scrolled down",
   "minApk": 0
 }
