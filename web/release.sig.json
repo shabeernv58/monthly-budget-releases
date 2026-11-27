@@ -11,13 +11,13 @@
   "fonts/nunito-latin-600-normal.woff2": "45f437de32ff5973eb5616b43c1308bf9fe897442f3d78a603c4cd0a06d66573",
   "fonts/space-grotesk-latin-500-normal.woff2": "1b1a8131d9edf975d9decee81e2f2bf504812f7a4f498e5500f28a613e22e64c",
   "fonts/space-grotesk-latin-600-normal.woff2": "685bbbf69fa616df1ef81847c85fc76be097ddfb3468ff2257be54511ab3130f",
-  "index.html": "0fad8d51ab83a5ff8b1ae364e302ebcb86999cda03b8319e7efcad065aaef1c3",
+  "index.html": "02bcdbcb891af207f4e29dd4275105e85ff4eb8d7d87065126d4d45e2c932101",
   "jspdf.plugin.autotable.min.js": "2223830cf9a1ec85af014cc71b37c1b1eb566f3d18b2ab8071e96af822c58bdb",
   "jspdf.umd.min.js": "85ba2cc3ff858a20fa49fe6e457bec863ea40b55a9f3725e58a940e62f6f61a4",
   "sms-rules.json": "d7d34d7650b455db0698b34dc1a127b663a1dbd882ad7962e6e5a9b48eb81fc9",
-  "version.json": "538982785252180a8b0c3e6b0393ed80353f6626620753a5aa037f03ab829364",
+  "version.json": "49466fa8772f77149200f124b6ea8f64098861a2930a32666190d66445c7582d",
   "xlsx.full.min.js": "cc015130aa8521e7f088f88898eba949ccdcbfb38df0bd129b44b7273c3a6f41"
  },
- "sig": "MEYCIQDjE4quqvDq/+nhS/9QYDRqWM5Vt6bslaF8zXQ2KBrSxAIhAL8aGEAwQcn8gotS+e9DxsrWdfOq8i9adZmE9MrnFFLK",
- "version": 25
+ "sig": "MEUCIGFxDIIe/RJFZXlVSIBsotxrxI7cTWvvuRMonvaVxThPAiEA/yPAMDwnDXciOpVB0wRof/69+nGXLBEtQUMkuTydZIU=",
+ "version": 26
 }

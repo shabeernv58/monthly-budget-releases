@@ -1,5 +1,5 @@
 {
-  "version": 25,
+  "version": 26,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -18,7 +18,7 @@
     "fonts/barlow-condensed-latin-400-normal.woff2",
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
-  "apk": 14,
-  "note": "Bills without a due date now wait in the Bills section, marked !, instead of in Pending actions; Due in (days): set once for a biller or a card's statements, in the bill or under Settings \u203a SMS tracking \u203a Bill due days. Later bill messages without a due date get bill date + those days. A due date in",
+  "apk": 15,
+  "note": "Settings \u203a About \u203a App updates: your app and screens versions, Check for updates, and Download / Restart now when something is waiting. A red dot on the Settings tab shows an update is waiting; App 1.15: looks for updates each time you open or come back to the app (at most every 2 minutes) and every",
   "minApk": 0
 }
