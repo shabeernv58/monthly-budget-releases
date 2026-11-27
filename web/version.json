@@ -1,5 +1,5 @@
 {
-  "version": 22,
+  "version": 23,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -18,7 +18,7 @@
     "fonts/barlow-condensed-latin-400-normal.woff2",
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
-  "apk": 12,
-  "note": "Monthly tracker: each month starts on the day you choose (Settings \u203a Monthly tracker, set to 27). Everything from that day on counts in the next month; Salary counts for the month that starts nearest to the day it arrives (27 Nov salary \u2192 December); Move any transaction to the previous or next month",
+  "apk": 13,
+  "note": "Bills: tick a bill to mark it paid (with Undo); paid bills leave the list, View all shows them; the pencil edits a bill; Pending actions: a ! button above the + on the Monthly tab instead of the banner; Built-in shop words (supermarket, restaurant, clinic, pharmacy, petrol, parking, salon\u2026) set the ",
   "minApk": 0
 }
