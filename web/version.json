@@ -1,5 +1,5 @@
 {
-  "version": 26,
+  "version": 27,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -19,6 +19,6 @@
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
   "apk": 15,
-  "note": "Settings \u203a About \u203a App updates: your app and screens versions, Check for updates, and Download / Restart now when something is waiting. A red dot on the Settings tab shows an update is waiting; App 1.15: looks for updates each time you open or come back to the app (at most every 2 minutes) and every",
+  "note": "Fixed: an empty month on the Budget tab no longer zooms the screen out and hides the tab bar. Long text anywhere now wraps onto the next line instead of widening the page; + New category in a category drop-down opens the full category screen (name, icon, colour) and brings you back with it picked; 1",
   "minApk": 0
 }
