@@ -1,5 +1,5 @@
 {
-  "version": 29,
+  "version": 30,
   "files": [
     "index.html",
     "xlsx.full.min.js",
@@ -18,7 +18,7 @@
     "fonts/barlow-condensed-latin-400-normal.woff2",
     "fonts/barlow-condensed-latin-600-normal.woff2"
   ],
-  "apk": 15,
-  "note": "Settings reorganised: Currency now sits above Exchange rates, Done / pending marking moved to Look & feel, and Erase all data stands on its own just above About",
+  "apk": 16,
+  "note": "Monthly tab \u203a Actual vs plan: each category shows its icon and colour. Tap one for its window: spent and left of the plan, average of the last 6 months, how you're doing against your usual pace, a chart of every month (tap a month), and Update planned amount, Transactions, Add expense and Delete cat",
   "minApk": 0
 }

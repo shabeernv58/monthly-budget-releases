@@ -135,6 +135,22 @@ nav.tabs a .ic{width:22px;height:22px}
 .icgrid button[aria-checked=true]{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc);color:var(--acc)}
 .icgrid.small{grid-template-columns:repeat(7,minmax(0,1fr))}
 .icbtn{display:flex;align-items:center;gap:10px;width:100%;padding:6px 12px 6px 6px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer;text-align:left;min-height:48px}.icbtn>span:nth-child(2){flex:1}.icur{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--acc) 12%,var(--card));color:var(--acc)}.icbtn[aria-expanded=true]>svg{transform:rotate(180deg)}
+/* Monthly tab: categories, category window, category transactions, transaction page, charts */
+.catr{gap:12px;cursor:pointer}.catr .t{flex:1;min-width:0}.catr .h{display:flex;justify-content:space-between;gap:8px;font-size:14px}.catr .h .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.catr .track{display:block;height:8px;margin-top:7px}.catr .track i{background:light-dark(var(--cc),color-mix(in srgb,var(--cc) 65%,#fff))}.catr .track i.over{background:var(--negc,#e0365f)}.catr .grip{flex:none;padding:6px 4px;color:var(--mut);cursor:grab;touch-action:none}
+.cathead{background:var(--cc);color:#fff;border-radius:16px;padding:14px 14px 12px;margin:-4px 0 10px}.cathead .ch1{display:flex;align-items:center;gap:10px}.cathead .ch1 .t{flex:1;min-width:0;display:flex;flex-direction:column}.cathead .ch1 b{font:600 20px/1.2 var(--fNum,inherit)}.cathead .ch1 .t span{font-size:13px;opacity:.9}.cathead .num{font-size:15px;text-align:right}
+.cbadge{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--cc);display:grid;place-items:center;flex:none}.cbadge svg{width:22px;height:22px}
+.cbar{height:8px;border-radius:4px;background:rgba(255,255,255,.35);margin:12px 0 8px;overflow:hidden}.cbar i{display:block;height:100%;background:#fff;border-radius:4px}.cbar i.over{background:#ffd5dd}
+.ch2{display:flex;justify-content:space-between;gap:10px;font-size:13px;flex-wrap:wrap}.cathead .btn.cwdel{margin-top:10px;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.85);box-shadow:none}
+.trend{margin:4px 2px 6px;font-size:15px}.trend .neg{color:var(--negc,#e0365f)}.trend .pos{color:light-dark(#0b7a5c,#5fd3a6)}
+.chscroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -4px}.chscroll::-webkit-scrollbar{display:none}
+.lchart{display:block;max-width:none;color:light-dark(var(--cc),color-mix(in srgb,var(--cc) 65%,#fff))}.lchart .area{fill:currentColor;opacity:.14}.lchart .ln{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}.lchart .avg{stroke:var(--mut);stroke-dasharray:5 5;stroke-width:1.2}.lchart .avgt{fill:var(--mut);font:500 11px var(--fBody,inherit)}.lchart circle{fill:var(--bg);stroke:currentColor;stroke-width:2}.lchart .sel circle{fill:currentColor}.lchart .val{fill:var(--ink);font:600 11px var(--fNum,inherit);text-anchor:middle}.lchart .mon{fill:var(--mut);font:500 10.5px var(--fBody,inherit);text-anchor:middle}.lchart .sel .mon{fill:var(--ink);font-weight:700}.lchart .hit{fill:transparent;cursor:pointer}
+.cwbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 4px}.cwbtns button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border:1px solid var(--line);border-radius:14px;background:var(--card);cursor:pointer;font-size:13px;line-height:1.2;text-align:center}.cwbtns svg{width:24px;height:24px;color:var(--acc)}
+.tvstrip{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin:-4px -4px 6px;padding:2px 4px 0}.tvstrip::-webkit-scrollbar{display:none}.tvstrip button{flex:none;width:52px;height:50px;display:grid;place-items:center;background:none;border:0;border-bottom:3px solid transparent;color:light-dark(var(--cc),color-mix(in srgb,var(--cc) 65%,#fff));opacity:.55;cursor:pointer}.tvstrip button svg{width:26px;height:26px}.tvstrip button[aria-selected=true]{opacity:1;border-bottom-color:var(--acc)}
+.tvmonth{display:flex;align-items:center;gap:8px}.tvmonth .t{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}.tvmonth .t b{font:600 17px/1.2 var(--fNum,inherit)}.tvmonth .t span{font-size:13px;color:var(--mut)}.tvsorted{text-align:center;font-size:12px;margin:6px 0 8px}
+.tvadd{position:sticky;bottom:8px;display:flex;justify-content:flex-end;pointer-events:none;margin-top:-28px;z-index:2}.tvfab{pointer-events:auto;width:52px;height:52px;border-radius:50%;border:0;background:var(--acc);color:#fff;font-size:28px;line-height:1;box-shadow:0 6px 16px rgba(0,0,0,.22);cursor:pointer}
+.tvchart{margin-top:18px;padding-top:10px;border-top:1px solid var(--line)}.tvct{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:6px 2px;font-size:14px}.tvct span{color:var(--mut);font-size:13px}
+.tdhead{background:var(--cc);color:#fff;border-radius:16px;padding:10px 12px;display:flex;align-items:center;gap:6px;margin:-4px 0 12px}.tdhead button{display:flex;align-items:center;gap:6px;background:none;border:0;color:#fff;font:600 14px var(--fBody,inherit);padding:8px 6px;cursor:pointer}.tdhead button svg{width:18px;height:18px}.tdcat{margin-left:auto;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px}
+.tdtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.tdm{font:600 19px/1.25 var(--fNum,inherit)}.tda{font-size:19px;white-space:nowrap}.tdcard{margin:6px 0 2px;color:var(--mut);text-align:right}.tdmsg{margin-top:8px}
 .tabed summary{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;list-style:none}.tabed summary::-webkit-details-marker{display:none}.tabed summary .t{flex:1;min-width:0}.tabed summary .n{display:block;font-weight:500}.tabed summary .s{display:block;font-size:13px;color:var(--mut)}.tabed .chev{transition:transform .15s;color:var(--mut)}.tabed[open] .chev{transform:rotate(180deg)}.tabed+.tabed{border-top:1px solid var(--line)}.tabbody{padding:0 14px 14px}
 .icpanel{margin-top:8px;max-height:300px;overflow:auto;overscroll-behavior:contain;border:1px solid var(--line);border-radius:12px;padding:2px 10px 10px;background:var(--bg)}.icg{margin:10px 0 6px;font-size:13px;font-weight:600;color:var(--mut)}
 .colgrid{display:flex;flex-wrap:wrap;gap:10px}
@@ -1903,6 +1919,17 @@ const processEvent = (ev, quiet) => {
   else if (kind === 'installment') { t.cat = EMI_CAT; t.status = 'info'; }
   else if (kind === 'income') { t.cat = 'Income'; t.status = 'income'; }
   if (p.learned) t.learned = p.learned;
+  if (+ev.ts > 0) t.ts = +ev.ts;
+  if (ev.via === 'app') t.via = 'app'; // from a bank app's notification, not an SMS
+  // a charge in another currency: the phone converted it at your exchange rate; keep what the bank said
+  // app 1.15 and older don't convert: a currency read by the new rules arrives as p.cur
+  if (!p.origCur && p.cur) { const c0 = String(p.cur).toUpperCase().replace(/^\$$/, 'USD'); if (/^[A-Z]{3}$/.test(c0) && c0 !== 'AED' && c0 !== 'DHS') { p.origCur = c0; p.origAmount = p.amount; p.curUnknown = true; } }
+  if (p.origCur) {
+    const oc = String(p.origCur).toUpperCase(), oa = num2(p.origAmount), r = rates()[oc];
+    if (p.curUnknown && r > 0) t.amount = r2(oa / r);
+    if (p.curUnknown && !(r > 0)) { t.noRate = true; if (!PENDING[t.status]) t.status = 'needs'; } // no rate: it waits for you to type the AED amount
+    t.orig = { cur: oc, amt: oa, aed: t.noRate ? null : t.amount, rate: r > 0 ? r : null, bank: true };
+  }
   if (review) { t.after = t.status; t.status = 'review'; }
   if (shared) t.shared = true;
   a.txns.push(t);
@@ -1942,7 +1969,7 @@ const syncNative = () => {
   const cards = {}; for (const k in a.map.cards) cards[k] = { type: a.map.cards[k].type || '' };
   try {
     const learned = (a.learned || []).map(r => ({ id: r.id, kind: r.kind, match: r.match, fields: r.fields, biller: r.biller || '', name: r.name, trusted: !!r.trusted }));
-    b.syncSmsSettings(JSON.stringify({ notify: a.cfg.notify !== false, merchants, rules, words: builtinWordsNative(), dueDays: dueDaysNative(), cards, learned, actions: notifActsNative(), remind: { days: +a.cfg.remindDays || 0, onDue: !!a.cfg.remindOnDue, overdue: !!(NOTIF().on && NOTIF().overdue), hour: hh || 0, minute: mm || 0 } }));
+    b.syncSmsSettings(JSON.stringify({ notify: a.cfg.notify !== false, merchants, rules, words: builtinWordsNative(), dueDays: dueDaysNative(), rates: rates(), notifApps: (a.cfg.notifApps || []).slice(0, 30), cards, learned, actions: notifActsNative(), remind: { days: +a.cfg.remindDays || 0, onDue: !!a.cfg.remindOnDue, overdue: !!(NOTIF().on && NOTIF().overdue), hour: hh || 0, minute: mm || 0 } }));
     b.syncBills(JSON.stringify(a.bills.filter(x => x.status !== 'paid' && x.status !== 'nodue' && x.due && x.due >= addDays(today(), -1)).map(x => ({ key: x.key || x.id, title: billTitle(x), amount: x.amount, min: x.min || 0, due: x.due, paid: false }))));
   } catch (e) {}
 };
@@ -2003,7 +2030,7 @@ const txnForm = (t, isNew) => {
   const sgLine = !sgBill && t.suggest && t.suggest.line ? t.suggest.line : '';
   const sg = sgBill || sgLine ? `<div class="banner"><b>From a shared message</b><br><span class="muted">Shared messages don't mark bills paid or plan lines done by themselves.</span><div class="btns" style="margin-bottom:0"><button class="btn sm pri" type="button" id="sgGo">${sgBill ? `Mark ${esc(billTitle(sgBill))} paid` : `Mark ${esc(sgLine)} done`}</button><button class="btn sm" type="button" id="sgNo">Not this one</button></div></div>` : '';
   const fields = [];
-  if (t.src === 'manual' || isNew) fields.push({ k: 'merchant', label: 'What / where', value: t.merchant, ph: 'e.g. Cash at the supermarket' }, { k: 'amount', label: 'Amount', type: 'number', money: true, orig: t.orig, value: t.amount, half: true }, { k: 'date', label: 'Date', type: 'date', value: t.date, half: true });
+  if (t.src === 'manual' || isNew || t.noRate) fields.push({ k: 'merchant', label: 'What / where', value: t.merchant, ph: 'e.g. Cash at the supermarket' }, { k: 'amount', label: 'Amount', type: 'number', money: true, orig: t.orig, value: t.amount, half: true }, { k: 'date', label: 'Date', type: 'date', value: t.date, half: true });
   if (isIn) fields.push({ k: 'as', label: 'This money is', type: 'select', options: [['salary', 'Salary'], ['income', 'Extra cash received'], ['ignored', 'Not income (e.g. transfer between my accounts)']], value: t.status === 'ignored' ? 'ignored' : (t.kind === 'salary' || t.status === 'income-salary') ? 'salary' : 'income' });
   else {
     fields.push({ k: 'cat', label: 'Category', type: 'catpick1', value: t.cat || 'Other' });
@@ -2023,13 +2050,13 @@ const txnForm = (t, isNew) => {
   fields.push({ k: 'note', label: 'Note', type: 'textarea', value: t.note });
   const rv = t.status === 'review' ? `<div class="banner"><b>Read with a pattern you taught. Is this right?</b><div class="btns" style="margin-bottom:0"><button class="btn sm hot" type="button" id="rvYes">Yes, it's right</button><button class="btn sm" type="button" id="rvFix">Fix the pattern</button></div></div>` : '';
   const teachBtn = t.body && (t.kind === 'unknown' || t.kind === 'unknownCredit') ? '<div class="btns"><button class="btn sm" type="button" id="tTeach">Teach the app this message</button></div>' : '';
-  const pre = `${sg}${rv}${why ? `<p class="chip">${esc(why)}</p>` : ''}${t.body ? `<pre class="note">${esc(t.body)}</pre>` : ''}${teachBtn}`;
+  const pre = `${sg}${rv}${t.noRate ? `<div class="banner"><b>Charged ${esc(t.orig.cur)} ${fmt(t.orig.amt)}</b><br><span class="muted">There's no ${esc(t.orig.cur)} rate in Settings › Exchange rates. Type the amount in AED as it shows on your card, or add the rate.</span></div>` : ''}${why ? `<p class="chip">${esc(why)}</p>` : ''}${t.body ? `<pre class="note">${esc(t.body)}</pre>` : ''}${teachBtn}`;
   const sv = !isIn && !isNew ? (t.sav ? `<div class="banner"><b>${t.sav.mode === 'in' ? 'Moved into savings' : 'Paid from savings'}: ${esc(potName(t.sav.pot))}</b><br><span class="muted">${t.sav.counts === false ? 'Not counted' : 'Counted'} in this month's spending.</span><div class="btns" style="margin-bottom:0"><button class="btn sm" type="button" id="tSavEd">Change</button><button class="btn sm" type="button" id="tSavRm">Remove from savings</button></div></div>`
     : `<div class="btns"><button class="btn" type="button" id="tSavIn">${icon('piggy')} Move into savings</button><button class="btn" type="button" id="tSavOut">${icon('wallet')} Paid from savings</button></div>`) : '';
   const post = sv + (t.kind === 'installment' ? '<div class="btns"><button class="btn" type="button" id="tLoan">Add to Loans</button></div>' : '');
   form(isNew ? 'Add actual spending' : `${KLABEL[t.kind] || 'Transaction'} · ${MAIN()} ${fmtM(t.amount)}`, fields, (v, typed) => {
     keepOrig(t, v, typed);
-    if (isNew || t.src === 'manual') { if (!(v.amount > 0)) return 'Enter the amount'; t.merchant = v.merchant || 'Cash'; t.amount = v.amount; t.date = v.date || today(); }
+    if (isNew || t.src === 'manual' || t.noRate) { if (!(v.amount > 0)) return 'Enter the amount'; t.merchant = v.merchant || 'Cash'; t.amount = v.amount; t.date = v.date || today(); if (t.noRate) { delete t.noRate; if (t.orig) t.orig.aed = t.amount; } }
     if (v.note === undefined) v.note = t.note;
     if (!isIn && v.remember && t.merchant) {
       const kw = shopNorm(v.kw || shopKey(t.merchant)).replace(/\*/g, ' ').trim();
@@ -2290,10 +2317,11 @@ const trackerSettings = () => {
   form('Monthly tracker', [
     { k: 'startDay', label: 'Each month starts on day', type: 'select', options: Array.from({ length: 28 }, (_, i) => [String(i + 1), String(i + 1)]), value: String(startDay()) },
     { k: 'salaryNext', label: 'Salary counts for the month that starts nearest to when it arrives', type: 'checkbox', value: tr.salaryNext !== false },
+    { k: 'order', label: 'Actual vs plan order', type: 'select', options: [['spend', 'Highest spending first'], ['mine', 'My order (drag ☰ on the Monthly tab)']], value: tr.order === 'mine' ? 'mine' : 'spend' },
     { k: 'help', type: 'html', html: `<p class="muted">With day ${startDay()}, ${esc(mLong(nowKey()))} runs from ${esc(fmtDay(periodStart(nowKey())))} to ${esc(fmtDay(periodEnd(nowKey())))}. Everything that happens from the start day on counts in that month. Changing the day regroups everything at once; nothing is lost.</p>` }
   ], v => {
     snap();
-    S.settings.track = { startDay: Math.min(28, Math.max(1, +v.startDay || 1)), salaryNext: !!v.salaryNext };
+    S.settings.track = Object.assign({}, S.settings.track, { startDay: Math.min(28, Math.max(1, +v.startDay || 1)), salaryNext: !!v.salaryNext, order: v.order === 'mine' ? 'mine' : 'spend' });
     cur = nowKey();
     if (typeof syncNotesSoon === 'function') syncNotesSoon();
   });
@@ -2314,10 +2342,15 @@ const viewBudget = () => {
   // no due date yet: shown (marked !) in this month and in the month of the bill date, until you set it
   const nodue = a.bills.filter(b => b.status === 'nodue' && (cur === nowKey() || periodOf(b.date) === cur)).sort((x, y) => x.date.localeCompare(y.date));
   // plan vs actual by category
+  // plan: the category's Budget tab lines, or the amount typed in the tracker when it has none
   const pc = {}, ac = {};
-  if (m) m.expenses.forEach(x => catsOf(x).forEach(c => { pc[c] = (pc[c] || 0) + (+x.amount || 0); }));
+  CATS.forEach(c => { const p = catPlan(cur, c); if (p) pc[c] = p; });
+  if (m) m.expenses.forEach(x => catsOf(x).forEach(c => { if (!(c in pc)) pc[c] = linesPlan(cur, c); }));
   txns.forEach(t => { const s = spendOf(t); if (s) ac[t.cat || 'Other'] = (ac[t.cat || 'Other'] || 0) + s; });
-  const cats = [...new Set(Object.keys(pc).concat(Object.keys(ac)))].filter(c => pc[c] || ac[c]).sort((x, y) => (ac[y] || 0) - (ac[x] || 0));
+  const tr = TRK(), mine = tr.catOrder && tr.order === 'mine' ? tr.catOrder : null;
+  const bySpend = (x, y) => (ac[y] || 0) - (ac[x] || 0) || (pc[y] || 0) - (pc[x] || 0);
+  const cats = [...new Set(Object.keys(pc).concat(Object.keys(ac)))].filter(c => pc[c] || ac[c])
+    .sort(tr.order === 'mine' ? (x, y) => { const i = (mine || []).indexOf(x), j = (mine || []).indexOf(y); return (i < 0) - (j < 0) || (i - j) || bySpend(x, y); } : bySpend);
   // plan lines that have actuals linked to them
   const la = {}; txns.forEach(t => { const s = spendOf(t); if (s && t.line) la[t.line] = (la[t.line] || 0) + s; });
   const lines = m ? m.expenses.filter(x => la[x.name] != null) : [];
@@ -2339,9 +2372,9 @@ const viewBudget = () => {
   <h2>Bills${nodue.length ? ` <span class="bangc" title="Bills waiting for a due date">!</span>` : ''}<span class="sp"></span><span class="num">${bills.filter(b => b.status !== 'paid').length} due</span><button class="linkbtn" type="button" id="billsAll">${billsAll ? 'Unpaid only' : 'View all'}</button></h2>
   <div class="list">${nodue.map(nodueRow).join('')}${shownBills.length ? shownBills.map(billRow).join('') : nodue.length ? '' : `<div class="empty">${bills.length ? 'All bills this month are paid. Tap View all to see them.' : 'Bill messages (utility bills, wifi bills, card statements…) show up here with their due dates.'}</div>`}</div>
   ${lines.length ? `<h2>Plan lines</h2><div class="list bars">${lines.map(x => { const act = la[x.name], pl = +x.amount || 0, over = act > pl; return `<div class="r"><div class="h"><span>${esc(x.name)}</span><span class="num ${over ? 'neg' : ''}">${fmtM(r2(act))} / ${fmtM(pl)}</span></div><div class="track"><i class="${over ? 'over' : ''}" style="width:${pl ? Math.min(100, act / pl * 100) : 100}%"></i></div></div>`; }).join('')}</div>` : ''}
-  <h2>Actual vs plan by category</h2>
-  <div class="list bars">${cats.length ? cats.map(c => { const act = r2(ac[c] || 0), pl = r2(pc[c] || 0), over = act > pl; return `<div class="r"><div class="h"><span>${esc(c)}</span><span class="num ${over && pl ? 'neg' : ''}">${fmtM(act)} / ${fmtM(pl)}</span></div><div class="track"><i class="${over ? 'over' : ''}" style="width:${pl ? Math.min(100, act / pl * 100) : (act ? 100 : 0)}%"></i></div></div>`; }).join('') : '<div class="empty">Nothing yet this month.</div>'}</div>
-  <p class="muted">Actual spent / planned on the ${esc(tabName('month'))} tab. A plan line in two categories counts in each.</p>
+  <h2>Actual vs plan by category<span class="sp"></span><span class="muted" style="font:500 12px/1 var(--fBody,inherit)">${tr.order === 'mine' ? 'Your order' : 'Highest spending first'}</span></h2>
+  <div class="list catlist" id="catList">${cats.length ? cats.map(c => { const act = r2(ac[c] || 0), pl = r2(pc[c] || 0), over = act > pl, d = catDef(c); return `<div class="row catr" role="button" tabindex="0" data-cw="${esc(c)}">${tr.order === 'mine' ? `<span class="grip noswipe" data-grip="${esc(c)}" role="button" tabindex="0" aria-label="Drag to move ${esc(c)}">☰</span>` : ''}<span class="cico" style="--cc:${esc(d.color)}">${icon(d.icon)}</span><span class="t"><span class="h"><span class="n">${esc(c)}</span><span class="num ${over && pl ? 'neg' : ''}">${fmtM(act)} / ${fmtM(pl)}</span></span><span class="track"><i class="${over ? 'over' : ''}" style="width:${pl ? Math.min(100, act / pl * 100) : (act ? 100 : 0)}%;--cc:${esc(d.color)}"></i></span></span></div>`; }).join('') : '<div class="empty">Nothing yet this month.</div>'}</div>
+  <p class="muted">Actual spent / planned. Tap a category for its history, transactions and plan.${tr.order === 'mine' ? ' Drag ☰ to change the order.' : ''}</p>
   <h2>Transactions<span class="sp"></span><span class="num">${shown.length}</span><button class="btn sm" id="teachBtn">Teach</button><button class="btn sm" id="addAct">Add</button></h2>
   <div class="list">${shown.length ? shown.map(txRow).join('') : '<div class="empty">No transactions recorded for this month.</div>'}</div>
   ${ignored.length ? `<details class="hidden-list"><summary class="muted">Ignored messages (${ignored.length})</summary><div class="list">${ignored.map(txRow).join('')}</div><p class="muted">Messages marked "Not a transaction" or "Not money". Tap one to record it again.</p></details>` : ''}
@@ -2356,7 +2389,14 @@ const bindBudget = () => {
   b('smsSetup', smsSettings);
   b('teachBtn', teachList);
   b('addAct', () => txnForm({ id: uid(), src: 'manual', kind: 'manual', date: cur === nowKey() ? today() : cur + '-01', amount: '', merchant: '', cat: 'Other', line: '', status: 'auto', note: '' }, true));
-  document.querySelectorAll('[data-txn]').forEach(el => el.onclick = () => txnForm(ACT().txns.find(t => t.id === el.dataset.txn)));
+  document.querySelectorAll('[data-txn]').forEach(el => el.onclick = () => { const t = ACT().txns.find(x => x.id === el.dataset.txn); if (!t) return; if (PENDING[t.status]) txnForm(t); else txnDetail(t); });
+  document.querySelectorAll('[data-cw]').forEach(el => { el.onclick = e => { if (e.target.closest('[data-grip]')) return; catWindow(el.dataset.cw, cur); }; el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); catWindow(el.dataset.cw, cur); } }; });
+  if (TRK().order === 'mine') dragSort($('#catList'), '[data-grip]', (from, to) => {
+    const shown = [...document.querySelectorAll('#catList [data-cw]')].map(el => el.dataset.cw);
+    const [mv] = shown.splice(from, 1); shown.splice(to, 0, mv);
+    const rest = (TRK().catOrder || []).filter(c => !shown.includes(c));
+    snap(); S.settings.track = Object.assign({}, S.settings.track, { catOrder: shown.concat(rest) }); save(); render();
+  });
   document.querySelectorAll('[data-bill]').forEach(el => el.onclick = () => billForm(ACT().bills.find(x => x.id === el.dataset.bill)));
   b('billsAll', () => { billsAll = !billsAll; render(); });
   // the tick marks a bill paid (or not paid again) straight away, with Undo
@@ -2370,6 +2410,39 @@ const bindBudget = () => {
 };
 
 // ---------- settings ----------
+// ---------- personal app: banks that announce spending by app notification instead of SMS ----------
+const notifAppsHTML = () => {
+  const a = ACT(), b = SMS(), on = !!b.notifAccess(), picked = a.cfg.notifApps || [];
+  let seen = []; try { seen = JSON.parse(b.notifApps() || '[]'); } catch (e) {}
+  const apps = seen.map(x => ({ pkg: String(x.pkg || ''), label: String(x.label || x.pkg || '') })).filter(x => /^[\w.]+$/.test(x.pkg));
+  picked.forEach(pk => { if (!apps.some(x => x.pkg === pk)) apps.push({ pkg: pk, label: pk }); });
+  apps.sort((x, y) => (picked.includes(y.pkg) - picked.includes(x.pkg)) || x.label.localeCompare(y.label));
+  return `<h2>Bank app notifications</h2>
+    <p class="muted" style="margin-top:-4px">For banks that tell you about card spending in their app's notification instead of by SMS. Only the apps you tick below are read; every other app's notifications are skipped unread. Nothing leaves your phone.</p>
+    <div class="list"><div class="row"><span class="t"><span class="n">Notification access</span><span class="s">${on ? 'On' : 'Off: turn it on in Android\'s settings'}</span></span><span class="a ${on ? '' : 'neg'}">${on ? '✓' : '✕'}</span></div></div>
+    ${on ? '' : `<div class="btns"><button class="btn pri" type="button" id="nfOpen">Turn on notification access</button><button class="btn" type="button" id="nfApp">Open app settings</button></div>
+    <p class="muted">If the switch is greyed out or Android says it's a <b>restricted setting</b>: tap <b>Open app settings</b> › ⋮ (top right) › <b>Allow restricted settings</b>, confirm, then come back and tap <b>Turn on notification access</b> again. Android asks this because the app isn't from Google Play.</p>`}
+    ${on ? `<p class="muted"><b>Which apps are your banks?</b> ${apps.length ? 'Tick them.' : ''}</p>
+    ${apps.length ? `<div class="list">${apps.map(x => `<label class="row" style="cursor:pointer"><span class="t"><span class="n">${esc(x.label)}</span><span class="s">${esc(x.pkg)}</span></span><input type="checkbox" data-nfapp="${esc(x.pkg)}" ${picked.includes(x.pkg) ? 'checked' : ''} style="width:22px;height:22px;accent-color:var(--acc)"></label>`).join('')}</div>`
+      : '<p class="muted">Apps show up here after they post a notification. Open your bank app once or wait for its next notification, then come back.</p>'}
+    <div class="btns"><button class="btn sm" type="button" id="nfRef">Refresh list</button></div>
+    <p class="muted">If a bank notification is missed, set Monthly Budget's battery use to <b>Unrestricted</b> in Android's app settings.</p>` : ''}`;
+};
+const bindNotifApps = () => {
+  const b = SMS(), box = $('#nfSec'); if (!box || !b) return;
+  const bb = (id, f) => { const el = document.getElementById(id); if (el) el.onclick = f; };
+  bb('nfOpen', () => b.openNotifAccess());
+  bb('nfApp', () => b.openAppSettings());
+  bb('nfRef', () => { box.innerHTML = notifAppsHTML(); bindNotifApps(); });
+  box.querySelectorAll('[data-nfapp]').forEach(i => i.onchange = () => {
+    const a = ACT(), set = new Set(a.cfg.notifApps || []);
+    if (i.checked) set.add(i.dataset.nfapp); else set.delete(i.dataset.nfapp);
+    a.cfg.notifApps = [...set].slice(0, 30); save(); syncNative();
+    toast(i.checked ? 'Reading this app\'s notifications' : 'No longer reading this app');
+  });
+};
+// back from Android's settings: show whether access is on now
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && $('#nfSec') && SMS()) { $('#nfSec').innerHTML = notifAppsHTML(); bindNotifApps(); } });
 const smsSettings = () => {
   const a = ACT(), b = SMS();
   let st = {}; try { st = b ? JSON.parse(b.smsStatus()) : {}; } catch (e) {}
@@ -2390,6 +2463,7 @@ const smsSettings = () => {
     <div class="two"><label class="f"><span>How far back</span><select id="sMonths">${[2, 3, 4, 5, 6].map(n => `<option value="${n}" ${n === 3 ? 'selected' : ''}>${n} months</option>`).join('')}</select></label><div class="f"><span>&nbsp;</span><button class="btn" type="button" id="sRead" ${st.read ? '' : 'disabled'} style="width:100%">Read now</button></div></div>
     ${a.lastScan ? `<p class="muted">Last read ${esc(new Date(a.lastScan.at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }))}: ${a.lastScan.months} months, ${a.lastScan.found} messages.</p>` : ''}`}
 `}
+    ${b && !play && b.notifAccess ? `<div id="nfSec">${notifAppsHTML()}</div>` : ''}
     <h2>Teaching</h2>
     <div class="list"><button class="row" type="button" id="sTeach"><span class="t"><span class="n">Teach a message</span><span class="s">${unreadMsgs().length} unread message${unreadMsgs().length === 1 ? '' : 's'} · or paste one</span></span><span class="a" aria-hidden="true">›</span></button>
     <button class="row" type="button" id="sRules"><span class="t"><span class="n">Shop rules</span><span class="s">${a.map.rules.length} rule${a.map.rules.length === 1 ? '' : 's'}: shop keyword → category</span></span><span class="a" aria-hidden="true">›</span></button>
@@ -2413,6 +2487,7 @@ const smsSettings = () => {
   bb('sRead', () => { const n = +$('#sMonths').value; closeSheet(); readHistory(n); });
   bb('sClose', closeSheet);
   bb('sTeach', teachList);
+  bindNotifApps();
   bb('sLearned', learnedList);
   bb('sRules', rulesList);
   $('#sfrm').onsubmit = e => {
@@ -2644,6 +2719,215 @@ const learnedList = () => {
     $('#lEdit').onclick = () => teachForm({ body: r.sample, ruleId: r.id });
     $('#lDel').onclick = () => { snap(); ACT().learned = L.filter(x => x.id !== r.id); save(); syncNative(); learnedList(); toast('Deleted', true); };
   });
+};
+
+/* ---------- Monthly tab: category window, category transactions, transaction details, history charts ---------- */
+
+// a category's plan for a month: the total of its lines on the Budget tab when it has any;
+// otherwise the amount you typed for it in the tracker (kept per category, every month)
+const hasLines = (k, c) => { const m = S.months[k]; return !!m && m.expenses.some(x => catsOf(x).includes(c)); };
+const linesPlan = (k, c) => { const m = S.months[k]; return m ? r2(m.expenses.reduce((s, x) => s + (catsOf(x).includes(c) ? (+x.amount || 0) : 0), 0)) : 0; };
+const catPlan = (k, c) => hasLines(k, c) ? linesPlan(k, c) : (+((S.budgets || {})[c]) || 0);
+const catSpent = (k, c) => r2(monthTxns(k).reduce((s, t) => s + ((t.cat || 'Other') === c ? spendOf(t) : 0), 0));
+const isIncomeTxn = t => t.kind === 'salary' || t.kind === 'unknownCredit' || t.kind === 'income' || t.status === 'income' || t.status === 'income-salary';
+// what a category's transactions list shows: everything in it that isn't income or set aside as not a transaction
+const catTxns = (k, c) => monthTxns(k).filter(t => (t.cat || 'Other') === c && t.status !== 'ignored' && !isIncomeTxn(t));
+const MON3S = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const monShort = k => MON3S[+k.slice(5, 7) - 1] || k;
+
+// monthly spending in a category, from its first month with spending (at least the last 6 months) up to now
+const catHistory = c => {
+  const to = cur > nowKey() ? cur : nowKey();
+  let from = addM(nowKey(), -5);
+  ACT().txns.forEach(t => { if ((t.cat || 'Other') === c && spendOf(t)) { const k = txnMonth(t); if (k && k < from) from = k; } });
+  const out = [];
+  for (let k = from; k <= to && out.length < 60; k = addM(k, 1)) out.push({ k, v: catSpent(k, c) });
+  return out;
+};
+// average of the last 6 completed months that had spending in it (fewer if that's all there is)
+const catAvg = c => {
+  const done = catHistory(c).filter(p => p.k < nowKey() && p.v > 0).slice(-6);
+  return { n: done.length, avg: done.length ? r2(done.reduce((s, p) => s + p.v, 0) / done.length) : 0 };
+};
+// this month: spending so far against your usual pace for this many days; other months: the total against the average
+const catTrend = (c, k, spent, av) => {
+  if (!av.n || !av.avg) return '';
+  if (k === nowKey()) {
+    const st = new Date(periodStart(k) + 'T00:00'), en = new Date(periodEnd(k) + 'T00:00'), td = new Date(today() + 'T00:00');
+    const total = Math.round((en - st) / 864e5) + 1, day = Math.min(total, Math.max(1, Math.round((td - st) / 864e5) + 1));
+    const expected = av.avg * day / total;
+    if (!(expected > 0)) return '';
+    const pct = Math.round((spent / expected - 1) * 100);
+    return `Day ${day} of ${total}: ${pct === 0 ? 'right on your usual pace' : `<b class="${pct > 0 ? 'neg' : 'pos'}">${Math.abs(pct)}% ${pct > 0 ? 'above' : 'below'}</b> your usual pace`}`;
+  }
+  const pct = Math.round((spent / av.avg - 1) * 100);
+  return pct === 0 ? 'Same as your average' : `<b class="${pct > 0 ? 'neg' : 'pos'}">${Math.abs(pct)}% ${pct > 0 ? 'above' : 'below'}</b> your average`;
+};
+const shortAmt = v => { const n = Math.round(toMain(v)); return n >= 100000 ? Math.round(n / 1000) + 'k' : n >= 10000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : n.toLocaleString('en'); };
+
+// line chart with the value on each month, a dashed average line, and every month tappable (data-ck)
+const lineChart = (pts, opt) => {
+  if (!pts.some(p => p.v > 0)) return '<p class="empty" style="padding:18px 8px">No spending here yet. The chart fills in month by month.</p>';
+  const step = 58, W = Math.max(312, (pts.length - 1) * step + 44), H = 176, top = 28, bot = 30, padX = 22;
+  const max = Math.max(1, opt.avg || 0, ...pts.map(p => p.v)) * 1.08;
+  const x = i => pts.length === 1 ? W / 2 : padX + i * (W - 2 * padX) / (pts.length - 1);
+  const y = v => top + (H - top - bot) * (1 - v / max);
+  const line = pts.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join(' ');
+  const area = `${line} L${x(pts.length - 1).toFixed(1)} ${H - bot} L${x(0).toFixed(1)} ${H - bot} Z`;
+  const hit = pts.length === 1 ? W : (W - 2 * padX) / (pts.length - 1);
+  return `<div class="chscroll" data-chart="${esc(opt.id || '')}"><svg class="lchart" style="--cc:${esc(opt.cc || 'var(--acc)')}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.label || 'Monthly spending chart')}">
+    <path class="area" d="${area}"/><path class="ln" d="${line}"/>
+    ${opt.avg ? `<line class="avg" x1="0" x2="${W}" y1="${y(opt.avg).toFixed(1)}" y2="${y(opt.avg).toFixed(1)}"/><text class="avgt" x="6" y="${(y(opt.avg) - 5).toFixed(1)}">Avg ${shortAmt(opt.avg)}</text>` : ''}
+    ${pts.map((p, i) => `<g class="pt${p.k === opt.sel ? ' sel' : ''}"><circle cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="${p.k === opt.sel ? 6 : 4}"/><text class="val" x="${x(i).toFixed(1)}" y="${(y(p.v) - 10).toFixed(1)}">${shortAmt(p.v)}</text><text class="mon" x="${x(i).toFixed(1)}" y="${H - 9}">${monShort(p.k)}${p.k.slice(5) === '01' || i === 0 ? ' ' + p.k.slice(2, 4) : ''}</text></g>`).join('')}
+    ${pts.map((p, i) => `<rect class="hit" data-ck="${p.k}" x="${(x(i) - hit / 2).toFixed(1)}" y="0" width="${hit.toFixed(1)}" height="${H}"><title>${esc(mLong(p.k))}: ${CUR()} ${fmtM(p.v)}</title></rect>`).join('')}
+  </svg></div>`;
+};
+// scroll a chart so the chosen month is in view, and send taps on a month to onPick(monthKey)
+const bindChart = (box, sel, onPick) => {
+  if (!box) return;
+  const sc = box.querySelector('.chscroll'), r = box.querySelector(`[data-ck="${sel}"]`);
+  if (sc) sc.scrollLeft = r ? Math.max(0, +r.getAttribute('x') - sc.clientWidth / 2) : sc.scrollWidth;
+  box.querySelectorAll('[data-ck]').forEach(el => el.addEventListener('click', () => onPick(el.dataset.ck)));
+};
+
+// ---------- the category window (tap a category in Actual vs plan) ----------
+const catWindow = (c, k) => {
+  k = k || cur;
+  const d = catDef(c), plan = catPlan(k, c), spent = catSpent(k, c), av = catAvg(c), hist = catHistory(c);
+  const pct = plan ? Math.min(100, spent / plan * 100) : (spent ? 100 : 0), over = plan && spent > plan, sys = SYSTEM_CATS.includes(c);
+  $('#sheet').innerHTML = `<div class="cathead" style="--cc:${esc(d.color)}">
+      <div class="ch1"><span class="cbadge">${icon(d.icon)}</span><span class="t"><b>${esc(c)}</b><span>${esc(mLong(k))}</span></span><span class="num">Spent ${fmtM(spent)}${plan ? ' of ' + fmtM(plan) : ''}</span></div>
+      <div class="cbar"><i class="${over ? 'over' : ''}" style="width:${pct}%"></i></div>
+      <div class="ch2"><span>${plan ? (over ? `Over by ${CUR()} ${fmtM(r2(spent - plan))}` : `${CUR()} ${fmtM(r2(plan - spent))} left`) : 'No plan for this month'}</span><span>${av.n ? `${av.n}-month average: ${fmtM(av.avg)}` : 'No earlier months yet'}</span></div>
+      ${sys ? '' : '<button class="btn sm cwdel" type="button" id="cwDel">Delete category</button>'}
+    </div>
+    ${catTrend(c, k, spent, av) ? `<p class="trend">${catTrend(c, k, spent, av)}</p>` : ''}
+    <div id="cwChart">${lineChart(hist, { avg: av.avg, sel: k, cc: d.color, label: `${c}: spending by month` })}</div>
+    <p class="muted" style="text-align:center;margin:2px 0 10px">Tap a month to see its transactions</p>
+    <div class="cwbtns"><button type="button" id="cwPlan">${icon('wallet')}<span>Update planned amount</span></button><button type="button" id="cwTx">${icon('list')}<span>Transactions</span></button><button type="button" id="cwAdd">${icon('cart')}<span>Add expense</span></button></div>
+    <div class="btns"><button class="btn" type="button" id="cwClose">Close</button></div>`;
+  $('#veil').classList.add('on');
+  bindChart($('#cwChart'), k, mk => catTxView(c, mk));
+  $('#cwClose').onclick = closeSheet;
+  $('#cwTx').onclick = () => catTxView(c, k);
+  $('#cwAdd').onclick = () => addCatExpense(c, k);
+  $('#cwPlan').onclick = () => planEditor(c, k);
+  const del = $('#cwDel'); if (del) del.onclick = () => {
+    const n = catUsage(c);
+    confirmBox(`Delete ${c}?`, `${n ? `${n} item${n > 1 ? 's use' : ' uses'} it. They'll move to Other.` : 'Nothing uses it.'} You can undo this straight after.`, 'Delete category', () => {
+      snap(); renameCatEverywhere(c, 'Other'); S.cats = catDefs().filter(x => x.name !== c);
+      const tr = TRK(); if (tr.catOrder) S.settings.track = Object.assign({}, S.settings.track, { catOrder: tr.catOrder.filter(x => x !== c) });
+      refreshCats(); save(); render(); toast('Category deleted', true);
+    });
+  };
+};
+const addCatExpense = (c, k) => txnForm({ id: uid(), src: 'manual', kind: 'manual', date: k === nowKey() ? today() : periodStart(k), amount: '', merchant: '', cat: c, line: '', status: 'auto', note: '' }, true);
+
+// Update planned amount: the category's Budget tab lines when it has any (edited there too); otherwise one amount for the tracker
+const planEditor = (c, k) => {
+  const m = S.months[k];
+  if (m && hasLines(k, c)) {
+    const lines = m.expenses.filter(x => catsOf(x).includes(c));
+    const fields = lines.map((x, i) => x.liabId
+      ? { k: 'l' + i, type: 'html', html: `<div class="row"><span class="t"><span class="n">${esc(x.name)}</span><span class="s">From Loans: change it there</span></span><span class="a num">${fmtM(x.amount)}</span></div>` }
+      : { k: 'l' + i, label: x.name + (catsOf(x).length > 1 ? ` (also counts in ${catsOf(x).filter(y => y !== c).join(', ')})` : ''), type: 'number', money: true, orig: x.orig, value: x.amount });
+    fields.push({ k: 'help', type: 'html', html: `<p class="muted">These are the ${esc(mLong(k))} lines in ${esc(c)} on the ${esc(tabName('month'))} tab, so the plan here is their total. Changing an amount here changes it there too.</p>` });
+    form(`Planned for ${c}`, fields, v => {
+      for (let i = 0; i < lines.length; i++) { const val = v['l' + i]; if (val !== undefined && val !== '' && !(val >= 0)) return 'Amounts can\'t be negative'; }
+      snap();
+      lines.forEach((x, i) => { const val = v['l' + i]; if (!x.liabId && val !== undefined && val !== '') x.amount = r2(val); });
+      setTimeout(() => catWindow(c, k), 0);
+    });
+    return;
+  }
+  const curPlan = +((S.budgets || {})[c]) || 0;
+  form(`Planned for ${c}`, [
+    { k: 'amt', label: 'Planned amount each month', type: 'number', money: true, value: curPlan || '' },
+    { k: 'help', type: 'html', html: `<p class="muted">${esc(c)} has no lines on the ${esc(tabName('month'))} tab${m ? ` for ${esc(mLong(k))}` : ''}, so the tracker uses this amount every month. Leave it empty for no plan. If you later add a line in ${esc(c)} on the ${esc(tabName('month'))} tab, that month uses the line instead.</p>` }
+  ], v => {
+    if (v.amt !== '' && !(v.amt >= 0)) return 'The amount can\'t be negative';
+    snap(); S.budgets = S.budgets || {};
+    if (v.amt > 0) S.budgets[c] = r2(v.amt); else delete S.budgets[c];
+    setTimeout(() => catWindow(c, k), 0);
+  });
+};
+
+// ---------- a category's transactions, month by month ----------
+let tvSort = 'date';
+const tvCats = c => {
+  const seen = new Set(); ACT().txns.forEach(t => { if (t.status !== 'ignored' && !isIncomeTxn(t)) seen.add(t.cat || 'Other'); });
+  return CATS.filter(x => x === c || seen.has(x) || catPlan(cur, x) > 0);
+};
+const catTxView = (c, k) => {
+  k = k || cur;
+  const d = catDef(c), list = catTxns(k, c), total = r2(list.reduce((s, t) => s + spendOf(t), 0)), hist = catHistory(c), av = catAvg(c);
+  const all = r2(hist.reduce((s, p) => s + p.v, 0)), cats = tvCats(c);
+  list.sort(tvSort === 'amt' ? (x, y) => (+y.amount || 0) - (+x.amount || 0) : (x, y) => (y.date || '').localeCompare(x.date || '') || (y.ts || 0) - (x.ts || 0));
+  $('#sheet').innerHTML = `<div class="tvstrip" id="tvStrip" role="tablist" aria-label="Categories">${cats.map(x => `<button type="button" role="tab" aria-selected="${x === c}" data-tvc="${esc(x)}" style="--cc:${esc(catDef(x).color)}" aria-label="${esc(x)}">${icon(catDef(x).icon)}</button>`).join('')}</div>
+    <div class="tvmonth"><button class="ib" type="button" id="tvPrev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 5-7 7 7 7"/></svg></button>
+      <div class="t"><b style="color:light-dark(${esc(d.color)},color-mix(in srgb,${esc(d.color)} 65%,#fff))">${esc(c)}</b><span>${esc(mLong(k))} · ${CUR()} ${fmtM(total)}</span></div>
+      <button class="ib" type="button" id="tvNext" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg></button>
+      <button class="ib" type="button" id="tvSort" aria-label="Sort by ${tvSort === 'amt' ? 'date' : 'amount'}" title="Sort by ${tvSort === 'amt' ? 'date' : 'amount'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v16M4 8l4-4 4 4M16 20V4M12 16l4 4 4-4"/></svg></button></div>
+    <p class="muted tvsorted">${tvSort === 'amt' ? 'Biggest first' : 'Newest first'} · swipe left or right for the next category</p>
+    <div class="list" id="tvList">${list.length ? list.map(t => `<button class="row" type="button" data-tvt="${esc(t.id)}"><span class="cico" style="--cc:${esc(d.color)}">${icon(d.icon)}</span><span class="t"><span class="n">${esc(t.merchant || KLABEL[t.kind] || 'Transaction')}</span><span class="s">${esc(fmtDay(t.date))}${PENDING[t.status] ? ' · <b class="neg">pending</b>' : ''}${!spendOf(t) && !PENDING[t.status] ? ' · not counted' : ''}</span></span><span class="a"><span class="num">${fmtM(t.amount)}</span><span class="s">${t.orig && t.orig.bank ? esc(t.orig.cur) + ' ' + fmt(t.orig.amt) : ''}${t.card ? (t.orig && t.orig.bank ? ' · ' : '') + '•••• ' + esc(t.card) : ''}</span></span></button>`).join('') : `<div class="empty">Nothing in ${esc(c)} in ${esc(mLong(k))}.</div>`}</div>
+    <div class="tvadd"><button class="tvfab" type="button" id="tvAdd" aria-label="Add expense in ${esc(c)}">+</button></div>
+    <div class="tvchart"><p class="tvct"><b>${esc(c)} · trend (${CUR()})</b><span>All months: ${fmtM(all)}</span></p><div id="tvChart">${lineChart(hist, { avg: av.avg, sel: k, cc: d.color, label: `${c}: spending by month` })}</div><p class="muted" style="text-align:center;margin:2px 0 0">Tap a month to show it</p></div>
+    <div class="btns"><button class="btn" type="button" id="tvBack">Back to ${esc(c)}</button><button class="btn" type="button" id="tvClose">Close</button></div>`;
+  $('#veil').classList.add('on');
+  const strip = $('#tvStrip'), on = strip.querySelector('[aria-selected=true]');
+  if (on) strip.scrollLeft = Math.max(0, on.offsetLeft - strip.clientWidth / 2 + on.offsetWidth / 2);
+  strip.querySelectorAll('[data-tvc]').forEach(b => b.onclick = () => catTxView(b.dataset.tvc, k));
+  $('#tvPrev').onclick = () => catTxView(c, addM(k, -1));
+  $('#tvNext').onclick = () => catTxView(c, addM(k, 1));
+  $('#tvSort').onclick = () => { tvSort = tvSort === 'amt' ? 'date' : 'amt'; catTxView(c, k); };
+  $('#tvAdd').onclick = () => addCatExpense(c, k);
+  $('#tvBack').onclick = () => catWindow(c, k);
+  $('#tvClose').onclick = closeSheet;
+  bindChart($('#tvChart'), k, mk => catTxView(c, mk));
+  document.querySelectorAll('[data-tvt]').forEach(el => el.onclick = () => { const t = ACT().txns.find(x => x.id === el.dataset.tvt); if (t) txnDetail(t, () => catTxView(c, k)); });
+  // swipe sideways on the list or the strip: next / previous category
+  let sx = 0, sy = 0, st = 0;
+  ['tvList', 'tvStrip'].forEach(id => {
+    const el = $('#' + id);
+    el.addEventListener('touchstart', e => { const p = e.touches[0]; sx = p.clientX; sy = p.clientY; st = Date.now(); }, { passive: true });
+    el.addEventListener('touchend', e => {
+      const p = e.changedTouches[0], dx = p.clientX - sx, dy = p.clientY - sy;
+      if (id === 'tvStrip' && cats.length > 5) return; // the strip scrolls itself when there are many categories
+      if (Date.now() - st > 700 || Math.abs(dx) < 70 || Math.abs(dx) < 1.8 * Math.abs(dy)) return;
+      const i = cats.indexOf(c), n = cats[(i + (dx < 0 ? 1 : -1) + cats.length) % cats.length];
+      if (n && n !== c) catTxView(n, k);
+    }, { passive: true });
+  });
+};
+
+// ---------- one transaction ----------
+const txnDetail = (t, back) => {
+  const a = ACT(), c = t.cat || 'Other', d = catDef(c), k = txnMonth(t), av = catAvg(c), isIn = isIncomeTxn(t);
+  const when = t.ts ? new Date(t.ts) : null, dt = new Date((t.date || today()) + 'T00:00');
+  const cc = t.card ? (a.map.cards[t.card] || {}) : null, bank = t.bank || (cc && cc.bank) || '';
+  $('#sheet').innerHTML = `<div class="tdhead" style="--cc:${esc(d.color)}">
+      <button type="button" id="tdDel">${icon('close')}<span>${t.src === 'manual' ? 'Delete' : t.status === 'ignored' ? 'Record again' : 'Not a transaction'}</span></button>
+      <button type="button" id="tdEdit">${icon('edit')}<span>Edit</span></button>
+      <span class="tdcat"><span class="cbadge">${icon(isIn ? 'coin' : d.icon)}</span><span>${esc(isIn ? 'Income' : c)}</span></span></div>
+    <div class="tdbody"><div class="tdtop"><b class="tdm">${esc(t.merchant || KLABEL[t.kind] || 'Transaction')}</b><b class="num tda">${CUR()} ${fmtM(t.amount)}</b></div>
+      ${t.orig && t.orig.bank ? `<p class="muted">Charged ${esc(t.orig.cur)} ${fmt(t.orig.amt)}${t.orig.rate ? ` · converted at your rate (1 AED = ${t.orig.rate} ${esc(t.orig.cur)})` : ' · no rate set yet'}</p>` : ''}
+      ${t.card || bank ? `<p class="tdcard">${esc([bank, t.card ? cardLabel(t.card) : ''].filter(Boolean).join(' · '))}</p>` : ''}
+      <p class="muted">${esc(dt.toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }))}${when ? ' · ' + esc(when.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })) : ''}${t.via === 'app' ? ' · from the bank app' : t.src === 'sms' ? ' · from SMS' : ''}</p>
+      ${t.balance ? `<p>${esc(bank ? bank + ' a' : 'A')}ccount balance: <b class="num">${esc(t.balance)}</b></p>` : ''}
+      ${PENDING[t.status] ? '<p class="chip">Waiting in Pending actions</p>' : !spendOf(t) && !isIn ? `<p class="chip">${esc(whyNot(t) || 'Not counted')}</p>` : ''}
+      ${t.note ? `<p class="note">${esc(t.note)}</p>` : ''}
+      ${t.body ? `<details class="tdmsg"><summary class="muted">The message</summary><pre class="note">${esc(t.body)}</pre></details>` : ''}</div>
+    ${isIn ? '' : `<p class="tvct"><b>${esc(c)} · by month</b><span>${av.n ? `${av.n}-month average ${fmtM(av.avg)}` : ''}</span></p><div id="tdChart">${lineChart(catHistory(c), { avg: av.avg, sel: k, cc: d.color, label: `${c}: spending by month` })}</div>`}
+    <div class="btns">${back ? '<button class="btn" type="button" id="tdBack">Back</button>' : ''}<button class="btn" type="button" id="tdClose">Close</button></div>`;
+  $('#veil').classList.add('on');
+  bindChart($('#tdChart'), k, mk => catTxView(c, mk));
+  $('#tdClose').onclick = closeSheet;
+  if (back) $('#tdBack').onclick = back;
+  $('#tdEdit').onclick = () => txnForm(t);
+  $('#tdDel').onclick = () => {
+    if (t.src === 'manual') confirmBox('Delete this expense?', `${t.merchant || 'This expense'}, ${CUR()} ${fmtM(t.amount)}. You can undo this straight after.`, 'Delete', () => { snap(); savUnlink(t); a.txns = a.txns.filter(x => x.id !== t.id); save(); render(); toast('Deleted', true); });
+    else { snap(); t.status = t.status === 'ignored' ? 'auto' : 'ignored'; save(); render(); closeSheet(); toast(t.status === 'ignored' ? 'Set aside as not a transaction' : 'Recorded again', true); }
+  };
 };
 
 // ---------- icons (24px line icons) ----------
@@ -3183,7 +3467,7 @@ const buildNotes = () => {
 const notesSnapshot = () => {
   const m = S.months[nowKey()], plan = m ? monthCalc(m) : { used: 0 };
   const cats = {};
-  if (m) m.expenses.forEach(x => catsOf(x).forEach(c => { cats[c] = cats[c] || { plan: 0, spent: 0 }; cats[c].plan += +x.amount || 0; }));
+  CATS.forEach(c => { const p = catPlan(nowKey(), c); if (p) cats[c] = { plan: p, spent: 0 }; });
   let spent = 0, uncat = 0;
   try {
     monthTxns(nowKey()).forEach(t => { const s = spendOf(t); if (s) { const c = t.cat || 'Other'; cats[c] = cats[c] || { plan: 0, spent: 0 }; cats[c].spent += s; spent += s; } });
@@ -3202,7 +3486,7 @@ const notesSnapshot = () => {
   const prev = { month: pk, label: mLong(pk), plan: pm ? monthCalc(pm).used || 0 : 0, spent: pSpent, saved: saved(pk) };
   let owe = 0, owed = 0; try { const d = ffDebts(); owe = r2(d.oweAED); owed = r2(d.owedAED); } catch (e) {}
   const ps = new Date(periodStart(nowKey()) + 'T00:00').getTime(), pe = new Date(periodEnd(nowKey()) + 'T00:00').getTime() + 864e5;
-  return { month: nowKey(), start: ps, end: pe, startDay: startDay(), label: mLong(nowKey()), cats, plan: plan.used || 0, spent, uncat, cards, cur: MAIN(), rate: conv(1, 'AED', MAIN()), txns, bills, saved: saved(nowKey()), prev, owe, owed };
+  return { month: nowKey(), start: ps, end: pe, startDay: startDay(), label: mLong(nowKey()), cats, plan: plan.used || 0, spent, income: (() => { try { return actualIncome(nowKey()).total || 0; } catch (e) { return 0; } })(), uncat, cards, cur: MAIN(), rate: conv(1, 'AED', MAIN()), txns, bills, saved: saved(nowKey()), prev, owe, owed };
 };
 
 let notesTimer = 0;
@@ -3804,7 +4088,7 @@ $('#fileJ').addEventListener('change', async e => {
   if (!backupOK(d)) { toast(DAMAGED); return; }
   snap(); S = Object.assign(blank(), d); save(); render(); toast('Backup restored', true);
 });
-const CHANGELOG = [{"version": 29, "date": "2026-11-27T16:45:00+04:00", "changes": ["Settings reorganised: Currency now sits above Exchange rates, Done / pending marking moved to Look & feel, and Erase all data stands on its own just above About"]}, {"version": 28, "date": "2026-11-27T16:45:00+04:00", "changes": ["Fixed: swiping to change month now works on an empty month too, from anywhere on the page"]}, {"version": 27, "date": "2026-11-27T18:00:00+04:00", "changes": ["Fixed: an empty month on the Budget tab no longer zooms the screen out and hides the tab bar. Long text anywhere now wraps onto the next line instead of widening the page", "+ New category in a category drop-down opens the full category screen (name, icon, colour) and brings you back with it picked", "130 icons in groups (home, bills, shopping, food, transport, money, health, family, work, leisure, other) and 24 colours, used wherever you pick an icon", "Settings \u203a Appearance \u203a Tabs: one row per tab; tap it to change its name, heading, small line and icon"]}, {"version": 26, "date": "2026-11-27T17:30:00+04:00", "changes": ["Settings \u203a About \u203a App updates: your app and screens versions, Check for updates, and Download / Restart now when something is waiting. A red dot on the Settings tab shows an update is waiting", "App 1.15: looks for updates each time you open or come back to the app (at most every 2 minutes) and every 15 minutes while you use it, so updates show without closing the app fully. Tapping Later on a new-version pop-up no longer hides it until a restart: it stays in Settings"]}, {"version": 25, "date": "2026-11-27T16:30:00+04:00", "changes": ["Bills without a due date now wait in the Bills section, marked !, instead of in Pending actions", "Due in (days): set once for a biller or a card's statements, in the bill or under Settings \u203a SMS tracking \u203a Bill due days. Later bill messages without a due date get bill date + those days. A due date in the message always wins", "App 1.14: the phone works out the due date and sets the reminder straight away, without asking"]}, {"version": 24, "date": "2026-11-27T15:00:00+04:00", "changes": ["Pop-ups always open at the top, even if the previous one was scrolled down"]}, {"version": 23, "date": "2026-11-27T16:00:00+04:00", "changes": ["Bills: tick a bill to mark it paid (with Undo); paid bills leave the list, View all shows them; the pencil edits a bill", "Pending actions: a ! button above the + on the Monthly tab instead of the banner", "Built-in shop words (supermarket, restaurant, clinic, pharmacy, petrol, parking, salon\u2026) set the category by themselves, also when the bank cuts the word short (SUPERMARK, RESTAUR, CLIN). Shortened forms like SPRMKT are suggested in Pending actions", "Forms no longer open the keyboard by themselves; tap a field to type", "Swipe left or right on the Budget and Monthly tabs to change month (can be switched off in Settings \u203a Look & feel)", "Categories: drag \u2630 to change the order", "F&F tab is now Split, with the heading Shared expenses; small lines under the Budget and Monthly headings. Edit names, headings and lines in Settings \u203a Appearance", "App 1.13: notifications use the same built-in shop words"]}, {"version": 22, "date": "2026-11-27T13:00:00+04:00", "changes": ["Monthly tracker: each month starts on the day you choose (Settings \u203a Monthly tracker, set to 27). Everything from that day on counts in the next month", "Salary counts for the month that starts nearest to the day it arrives (27 Nov salary \u2192 December)", "Move any transaction to the previous or next month from the transaction, or with Next month on the notification", "Bills sit in the month their due date falls in and carry forward while unpaid. A bill message without a due date asks you to set it", "Credit card purchases ask which month they count in; debit card purchases count straight away; paying the card's bill doesn't count again", "New card: the app asks once whether it's credit or debit. Name your cards in Settings \u203a Bank SMS & bills", "Pending actions: anything the app isn't sure about waits there, not counted, with a count on the Monthly tab, Discard and Clear reminders", "App 1.12: notification buttons for salary and money in, credit card month, new card type and missing due dates"]}, {"version": 21, "date": "2026-11-27T10:00:00+04:00", "changes": ["Updated the Excel reader to the latest secure version; importing and exporting work as before"]}, {"version": 20, "date": "2026-11-26T17:30:00+04:00", "changes": ["Restoring a backup now checks the whole file first; a damaged or altered backup is refused and your data stays as it is"]}, {"version": 19, "date": "2026-11-26T17:15:00+04:00", "changes": ["A bank message you share into the app is recorded straight away (with Undo), but no longer marks a bill paid or a plan line done by itself: open it and tap Mark \u2026 paid / done"]}, {"version": 18, "date": "2026-11-26T15:00:00+04:00", "changes": ["App 1.11: updates now come from a separate releases page, so the app's code can be kept private"]}, {"version": 17, "date": "2026-11-26T14:10:00+04:00", "changes": ["App 1.10: fixed the header and tab bar sitting under the phone's status bar and navigation buttons (from 1.9)"]}, {"version": 16, "date": "2026-11-26T19:00:00+04:00", "changes": ["App 1.9: screen updates must carry a valid signature before the app installs them", "App 1.9: the app's pages can no longer load anything from the internet or open outside links (only GitHub)", "App 1.9: PIN and pattern are checked by the phone's secure hardware (Android Keystore); wrong tries are counted there too. Your existing PIN moves over the first time you unlock", "App 1.9: automatic daily backups are kept privately inside the app; backups you save yourself still go to Downloads", "App 1.9: ready for Android 16 (new back-button handling, full-screen layout with the bar colours matching your theme)", "App 1.9: share a bank SMS to the app (Messages \u203a long-press \u203a Share \u203a Monthly Budget) to record it", "App 1.9: smaller, obfuscated app; stricter checks on links opened from notifications; pinned build steps"]}, {"version": 15, "date": "2026-11-26T17:20:00+04:00", "changes": ["The app asks again before recording similar transactions under the same category: '3 similar transactions found. Record them under Groceries too?'", "Learned rules ask the same way when earlier transactions match"]}, {"version": 14, "date": "2026-11-26T17:00:00+04:00", "changes": ["Fixed: transactions kept showing under 'Needs a category' after their category was set (shop rules, learned rules and taught messages now clear it)", "Transactions read by a taught pattern now sit in their own 'Check these' list; saving one counts as 'yes, it's right'", "Suggested categories are marked 'suggested, tap to confirm'"]}, {"version": 13, "date": "2026-11-26T16:30:00+04:00", "changes": ["Shop rules: 'Always use this category' now matches a keyword (e.g. NESTO) so every branch is caught, not just the exact name", "After making a rule, update earlier matching transactions in one tap", "The app learns a rule by itself when you put the same shop in the same category twice (with Undo)", "Settings \u203a Bank SMS & bills \u203a Shop rules: see, edit, add or delete rules", "App 1.8: notifications use the same shop rules; screen updates show 'Update ready \u00b7 Restart now' and apply without closing the app"]}, {"version": 12, "date": "2026-11-26T15:00:00+04:00", "changes": ["Tabs renamed: Month is now Budget and Budget is now Monthly. Rename any tab and change its icon in Settings \u203a Appearance", "Category picker on the Monthly tab now matches the Budget tab: icon, name and tick box", "Pencil button next to every category picker: add, rename, or change icon and colour without leaving the form", "Transactions and savings: mark a transaction as moved into savings (a deposit) or paid from savings (a withdrawal); you choose whether it counts in the month's spending", "App 1.7: notification buttons as icons (category, savings, save as Other, not a transaction, open); choose which show, their order, icon and colour in Settings \u203a Notifications \u203a Notification buttons", "Daily, weekly and monthly summaries, each with its own day and time"]}, {"version": 11, "date": "2026-11-26T12:00:00+04:00", "changes": ["App 1.6: a backup is saved automatically each day you change something; the newest 10 days are kept and older automatic copies are removed", "After a reset, the app offers to restore the latest backup in one tap", "Settings \u203a Security \u203a Backups on this phone: see the saved copies and restore any of them", "Update prompt always points to the newest app version, even if you've skipped several"]}, {"version": 10, "date": "2026-11-26T10:00:00+04:00", "changes": ["Security: no email needed any more. Set a PIN or pattern straight away", "Forgot your PIN or pattern? Try again, or reset the app and restore your latest backup (the weekly auto backup in Downloads)", "Security settings show when the last weekly auto backup was saved"]}, {"version": 9, "date": "2026-11-26T00:30:00+04:00", "changes": ["'More' is now 'Settings'", "Appearance: light, dark or phone theme, accent colour, five font styles, text size, tab icons and their style, compact rows, square or round corners, start tab, show or hide cents", "Categories: add, rename, reorder or delete them with an icon and colour, from the Month tab or Settings; shared by Month and Budget, picked from a drop-down with tick boxes", "Main currency set once in Settings and used across every tab; amounts typed in another currency are converted and keep the original amount as a note on the line", "Press back twice to exit (can be switched off)", "Income lines on the Month tab are plain, without colours or ticks", "Security: PIN, pattern or fingerprint lock, with a recovery email verified by a code; forgot your PIN? reset it with a code sent to that email", "Notifications: category over or close to plan, month over plan, big spends, low balance, transactions to sort, overdue bills, EMI days, month end, new month, savings goals, money owed, backup reminder, and quiet hours", "App 1.5: fingerprint unlock, email codes, hide the app in recent apps, and the warnings and reminders above"]}, {"version": 8, "date": "2026-11-25T20:58:00+04:00", "changes": ["Teach the app: pick a message it couldn't read (or paste one), tap the amount, name and due date, choose what it is; similar messages are read from then on", "Types you can teach: spending, refund, salary, extra cash received, bill due, card statement, card bill payment, or 'Not money' to ignore similar messages", "The first 3 messages read with a new pattern ask 'Is this right?' (Yes / Fix) before the pattern is trusted", "Ignored messages are kept in a hidden list under Budget \u203a Transactions, where you can record them again", "Taught messages listed in More \u203a Bank SMS & bills, where you can edit or delete them", "App 1.4: the phone uses your taught patterns as soon as an SMS arrives, and reads dates like '5 Jan 2027'"]}, {"version": 7, "date": "2026-11-25T19:48:00+04:00", "changes": ["Budget tab is now your actual spending: Salary credited and Extra cash received at the top, Actually spent vs planned, actual left, and a month-end plan vs actual table", "With app 1.3: bank and biller SMS are read on the phone and recorded automatically (card purchases, refunds, card payments, salary); new merchants and unreadable messages ask for a category or 'Not a transaction' from the notification", "Bills section: utility bills and card statements with due dates; paid automatically when the payment SMS arrives, or by hand; linked plan lines turn green", "Read past SMS: choose 2 to 6 months in More \u203a Bank SMS & bills; reminders a set number of days before the due date and on the day", "Credit cards: by default the card bill payment counts, not each purchase, so nothing is counted twice (changeable per card)", "Month tab: Actually spent so far card; every income and expense line can be marked done or pending, with All / Pending / Done filter and a done count", "More \u203a Done / pending marking: coloured blocks, green line through, coloured edge or tick only, with your choice of colours", "Instalment SMS can be added to Loans with one tap"]}, {"version": 6, "date": "2026-11-25T15:29:00+04:00", "changes": ["New Savings tab: pots for each goal (target amount and date) or open savings, in any currency", "Deposits, withdrawals (spending from savings, with a category) and moves between pots", "Goal progress with the amount still needed and how much to save each month to hit the date", "Overview with total savings, timeline filtered by week, month, year or all; Calendar view; Statistics with charts, per-pot and per-category breakdowns", "Eye button hides amounts; Export PDF for one pot or all savings; Savings sheet in the Excel export", "Month tab: Savings section at the bottom (total, saved and spent this month) that opens the Savings tab; 'Total cash savings' renamed 'Cash left & carried'", "Tabs are now Month, F&F, Savings, Budget, More; Loans opens from a button above the + on the Month tab", "Import a savings file (More \u203a Restore, or the Savings tab when it's empty); importing the same file twice skips entries already there"]}, {"version": 5, "date": "2026-11-25T14:54:00+04:00", "changes": ["F&F groups: Export PDF next to Copy summary, with balances, settle-up payments and every entry with its details", "PDFs and Excel exports can be shared straight to WhatsApp, Gmail or Drive, or saved to Downloads/MonthlyBudget (Share needs app 1.2)", "App 1.2: adds the Share option and saves PDFs as proper PDF files"]}, {"version": 4, "date": "2026-11-25T14:33:00+04:00", "changes": ["Family tab replaced by Family & friends (F&F): groups for trips, flatmates, cousins or one person, with everything Splid does", "Group entries: expenses (one or several payers; split equally, by exact amounts, by shares or by percentage), money given (loans, repayments) and income (refunds)", "Any currency per entry with its own exchange rate; groups settle in the currency you choose", "Balances per person, Settle up with the fewest payments, and a Paid button that records each settlement", "Copy summary for WhatsApp, archive or delete groups, Excel export has a sheet per group", "Month tab: new Money owed card (what you owe family & friends) that opens the Money I owe list; Total debt renamed Loans outstanding and now counts loans only", "Your earlier family entries moved into their own group per person (e.g. Hisana)", "More: Exchange rates for all currencies, with the Gulf pegs preset"]}, {"version": 3, "date": "2026-11-25T13:39:00+04:00", "changes": ["Loans: new \"EMI deducted on (day of month)\" field and a \"Deducted automatically every month\" tick box", "Loans marked as automatic log their EMI by themselves on that day and add it to the month's expenses; starts from the next EMI day, nothing is back-filled", "Loans: \"EMIs paid before using the app\" and \"Amount paid before the app\" are now simply \"EMIs paid\" and \"Amount paid\" (totals)", "More: version shows when it was last updated; tap it for this log", "Dates now follow Dubai time instead of UTC"]}, {"version": 2, "date": "2026-11-25T13:12:00+04:00", "changes": ["Expenses can carry several categories, e.g. Housing + Loans & EMIs", "Monthly EMIs on the Month tab is the total of expenses tagged Loans & EMIs", "Budget: an expense in two categories counts in each bar but once in the total", "Excel export lists all of a line's categories"]}, {"version": 1, "date": "2026-11-25T12:50:00+04:00", "changes": ["First release: monthly income and expenses, loans and EMIs in AED and INR, family credit, budget by category", "Import from the Excel workbook, export to Excel with working formulas", "Weekly automatic backup to Downloads/MonthlyBudget"]}];
+const CHANGELOG = [{"version": 30, "date": "2026-11-27T20:00:00+04:00", "changes": ["Monthly tab \u203a Actual vs plan: each category shows its icon and colour. Tap one for its window: spent and left of the plan, average of the last 6 months, how you're doing against your usual pace, a chart of every month (tap a month), and Update planned amount, Transactions, Add expense and Delete category", "Category transactions: switch category from the icons at the top or by swiping, change month with the arrows or the chart, sort by date or amount, add an expense", "Tapping a transaction opens its page: shop, amount, card, date and time, the message, and its category's history chart; Edit opens the usual form", "Settings \u203a Monthly tracker \u203a Actual vs plan order: highest spending first, or your own order (drag \u2630)", "Planned amount: a category's plan is the total of its lines on the Budget tab; for a category with no lines you type it in the tracker", "Reads more bank message wordings: card \"used for\" messages, amounts before or after the currency, Dhs and foreign currencies (converted at your exchange rate, original kept)", "App 1.16: reads notifications from the bank apps you pick (Settings \u203a Bank SMS & bills \u203a Bank app notifications); the same transaction arriving by SMS and by notification is counted once; transaction notifications show the category's plan bar, what's left and how much is safe to spend a day"]}, {"version": 29, "date": "2026-11-27T16:45:00+04:00", "changes": ["Settings reorganised: Currency now sits above Exchange rates, Done / pending marking moved to Look & feel, and Erase all data stands on its own just above About"]}, {"version": 28, "date": "2026-11-27T16:45:00+04:00", "changes": ["Fixed: swiping to change month now works on an empty month too, from anywhere on the page"]}, {"version": 27, "date": "2026-11-27T18:00:00+04:00", "changes": ["Fixed: an empty month on the Budget tab no longer zooms the screen out and hides the tab bar. Long text anywhere now wraps onto the next line instead of widening the page", "+ New category in a category drop-down opens the full category screen (name, icon, colour) and brings you back with it picked", "130 icons in groups (home, bills, shopping, food, transport, money, health, family, work, leisure, other) and 24 colours, used wherever you pick an icon", "Settings \u203a Appearance \u203a Tabs: one row per tab; tap it to change its name, heading, small line and icon"]}, {"version": 26, "date": "2026-11-27T17:30:00+04:00", "changes": ["Settings \u203a About \u203a App updates: your app and screens versions, Check for updates, and Download / Restart now when something is waiting. A red dot on the Settings tab shows an update is waiting", "App 1.15: looks for updates each time you open or come back to the app (at most every 2 minutes) and every 15 minutes while you use it, so updates show without closing the app fully. Tapping Later on a new-version pop-up no longer hides it until a restart: it stays in Settings"]}, {"version": 25, "date": "2026-11-27T16:30:00+04:00", "changes": ["Bills without a due date now wait in the Bills section, marked !, instead of in Pending actions", "Due in (days): set once for a biller or a card's statements, in the bill or under Settings \u203a SMS tracking \u203a Bill due days. Later bill messages without a due date get bill date + those days. A due date in the message always wins", "App 1.14: the phone works out the due date and sets the reminder straight away, without asking"]}, {"version": 24, "date": "2026-11-27T15:00:00+04:00", "changes": ["Pop-ups always open at the top, even if the previous one was scrolled down"]}, {"version": 23, "date": "2026-11-27T16:00:00+04:00", "changes": ["Bills: tick a bill to mark it paid (with Undo); paid bills leave the list, View all shows them; the pencil edits a bill", "Pending actions: a ! button above the + on the Monthly tab instead of the banner", "Built-in shop words (supermarket, restaurant, clinic, pharmacy, petrol, parking, salon\u2026) set the category by themselves, also when the bank cuts the word short (SUPERMARK, RESTAUR, CLIN). Shortened forms like SPRMKT are suggested in Pending actions", "Forms no longer open the keyboard by themselves; tap a field to type", "Swipe left or right on the Budget and Monthly tabs to change month (can be switched off in Settings \u203a Look & feel)", "Categories: drag \u2630 to change the order", "F&F tab is now Split, with the heading Shared expenses; small lines under the Budget and Monthly headings. Edit names, headings and lines in Settings \u203a Appearance", "App 1.13: notifications use the same built-in shop words"]}, {"version": 22, "date": "2026-11-27T13:00:00+04:00", "changes": ["Monthly tracker: each month starts on the day you choose (Settings \u203a Monthly tracker, set to 27). Everything from that day on counts in the next month", "Salary counts for the month that starts nearest to the day it arrives (27 Nov salary \u2192 December)", "Move any transaction to the previous or next month from the transaction, or with Next month on the notification", "Bills sit in the month their due date falls in and carry forward while unpaid. A bill message without a due date asks you to set it", "Credit card purchases ask which month they count in; debit card purchases count straight away; paying the card's bill doesn't count again", "New card: the app asks once whether it's credit or debit. Name your cards in Settings \u203a Bank SMS & bills", "Pending actions: anything the app isn't sure about waits there, not counted, with a count on the Monthly tab, Discard and Clear reminders", "App 1.12: notification buttons for salary and money in, credit card month, new card type and missing due dates"]}, {"version": 21, "date": "2026-11-27T10:00:00+04:00", "changes": ["Updated the Excel reader to the latest secure version; importing and exporting work as before"]}, {"version": 20, "date": "2026-11-26T17:30:00+04:00", "changes": ["Restoring a backup now checks the whole file first; a damaged or altered backup is refused and your data stays as it is"]}, {"version": 19, "date": "2026-11-26T17:15:00+04:00", "changes": ["A bank message you share into the app is recorded straight away (with Undo), but no longer marks a bill paid or a plan line done by itself: open it and tap Mark \u2026 paid / done"]}, {"version": 18, "date": "2026-11-26T15:00:00+04:00", "changes": ["App 1.11: updates now come from a separate releases page, so the app's code can be kept private"]}, {"version": 17, "date": "2026-11-26T14:10:00+04:00", "changes": ["App 1.10: fixed the header and tab bar sitting under the phone's status bar and navigation buttons (from 1.9)"]}, {"version": 16, "date": "2026-11-26T19:00:00+04:00", "changes": ["App 1.9: screen updates must carry a valid signature before the app installs them", "App 1.9: the app's pages can no longer load anything from the internet or open outside links (only GitHub)", "App 1.9: PIN and pattern are checked by the phone's secure hardware (Android Keystore); wrong tries are counted there too. Your existing PIN moves over the first time you unlock", "App 1.9: automatic daily backups are kept privately inside the app; backups you save yourself still go to Downloads", "App 1.9: ready for Android 16 (new back-button handling, full-screen layout with the bar colours matching your theme)", "App 1.9: share a bank SMS to the app (Messages \u203a long-press \u203a Share \u203a Monthly Budget) to record it", "App 1.9: smaller, obfuscated app; stricter checks on links opened from notifications; pinned build steps"]}, {"version": 15, "date": "2026-11-26T17:20:00+04:00", "changes": ["The app asks again before recording similar transactions under the same category: '3 similar transactions found. Record them under Groceries too?'", "Learned rules ask the same way when earlier transactions match"]}, {"version": 14, "date": "2026-11-26T17:00:00+04:00", "changes": ["Fixed: transactions kept showing under 'Needs a category' after their category was set (shop rules, learned rules and taught messages now clear it)", "Transactions read by a taught pattern now sit in their own 'Check these' list; saving one counts as 'yes, it's right'", "Suggested categories are marked 'suggested, tap to confirm'"]}, {"version": 13, "date": "2026-11-26T16:30:00+04:00", "changes": ["Shop rules: 'Always use this category' now matches a keyword (e.g. NESTO) so every branch is caught, not just the exact name", "After making a rule, update earlier matching transactions in one tap", "The app learns a rule by itself when you put the same shop in the same category twice (with Undo)", "Settings \u203a Bank SMS & bills \u203a Shop rules: see, edit, add or delete rules", "App 1.8: notifications use the same shop rules; screen updates show 'Update ready \u00b7 Restart now' and apply without closing the app"]}, {"version": 12, "date": "2026-11-26T15:00:00+04:00", "changes": ["Tabs renamed: Month is now Budget and Budget is now Monthly. Rename any tab and change its icon in Settings \u203a Appearance", "Category picker on the Monthly tab now matches the Budget tab: icon, name and tick box", "Pencil button next to every category picker: add, rename, or change icon and colour without leaving the form", "Transactions and savings: mark a transaction as moved into savings (a deposit) or paid from savings (a withdrawal); you choose whether it counts in the month's spending", "App 1.7: notification buttons as icons (category, savings, save as Other, not a transaction, open); choose which show, their order, icon and colour in Settings \u203a Notifications \u203a Notification buttons", "Daily, weekly and monthly summaries, each with its own day and time"]}, {"version": 11, "date": "2026-11-26T12:00:00+04:00", "changes": ["App 1.6: a backup is saved automatically each day you change something; the newest 10 days are kept and older automatic copies are removed", "After a reset, the app offers to restore the latest backup in one tap", "Settings \u203a Security \u203a Backups on this phone: see the saved copies and restore any of them", "Update prompt always points to the newest app version, even if you've skipped several"]}, {"version": 10, "date": "2026-11-26T10:00:00+04:00", "changes": ["Security: no email needed any more. Set a PIN or pattern straight away", "Forgot your PIN or pattern? Try again, or reset the app and restore your latest backup (the weekly auto backup in Downloads)", "Security settings show when the last weekly auto backup was saved"]}, {"version": 9, "date": "2026-11-26T00:30:00+04:00", "changes": ["'More' is now 'Settings'", "Appearance: light, dark or phone theme, accent colour, five font styles, text size, tab icons and their style, compact rows, square or round corners, start tab, show or hide cents", "Categories: add, rename, reorder or delete them with an icon and colour, from the Month tab or Settings; shared by Month and Budget, picked from a drop-down with tick boxes", "Main currency set once in Settings and used across every tab; amounts typed in another currency are converted and keep the original amount as a note on the line", "Press back twice to exit (can be switched off)", "Income lines on the Month tab are plain, without colours or ticks", "Security: PIN, pattern or fingerprint lock, with a recovery email verified by a code; forgot your PIN? reset it with a code sent to that email", "Notifications: category over or close to plan, month over plan, big spends, low balance, transactions to sort, overdue bills, EMI days, month end, new month, savings goals, money owed, backup reminder, and quiet hours", "App 1.5: fingerprint unlock, email codes, hide the app in recent apps, and the warnings and reminders above"]}, {"version": 8, "date": "2026-11-25T20:58:00+04:00", "changes": ["Teach the app: pick a message it couldn't read (or paste one), tap the amount, name and due date, choose what it is; similar messages are read from then on", "Types you can teach: spending, refund, salary, extra cash received, bill due, card statement, card bill payment, or 'Not money' to ignore similar messages", "The first 3 messages read with a new pattern ask 'Is this right?' (Yes / Fix) before the pattern is trusted", "Ignored messages are kept in a hidden list under Budget \u203a Transactions, where you can record them again", "Taught messages listed in More \u203a Bank SMS & bills, where you can edit or delete them", "App 1.4: the phone uses your taught patterns as soon as an SMS arrives, and reads dates like '5 Jan 2027'"]}, {"version": 7, "date": "2026-11-25T19:48:00+04:00", "changes": ["Budget tab is now your actual spending: Salary credited and Extra cash received at the top, Actually spent vs planned, actual left, and a month-end plan vs actual table", "With app 1.3: bank and biller SMS are read on the phone and recorded automatically (card purchases, refunds, card payments, salary); new merchants and unreadable messages ask for a category or 'Not a transaction' from the notification", "Bills section: utility bills and card statements with due dates; paid automatically when the payment SMS arrives, or by hand; linked plan lines turn green", "Read past SMS: choose 2 to 6 months in More \u203a Bank SMS & bills; reminders a set number of days before the due date and on the day", "Credit cards: by default the card bill payment counts, not each purchase, so nothing is counted twice (changeable per card)", "Month tab: Actually spent so far card; every income and expense line can be marked done or pending, with All / Pending / Done filter and a done count", "More \u203a Done / pending marking: coloured blocks, green line through, coloured edge or tick only, with your choice of colours", "Instalment SMS can be added to Loans with one tap"]}, {"version": 6, "date": "2026-11-25T15:29:00+04:00", "changes": ["New Savings tab: pots for each goal (target amount and date) or open savings, in any currency", "Deposits, withdrawals (spending from savings, with a category) and moves between pots", "Goal progress with the amount still needed and how much to save each month to hit the date", "Overview with total savings, timeline filtered by week, month, year or all; Calendar view; Statistics with charts, per-pot and per-category breakdowns", "Eye button hides amounts; Export PDF for one pot or all savings; Savings sheet in the Excel export", "Month tab: Savings section at the bottom (total, saved and spent this month) that opens the Savings tab; 'Total cash savings' renamed 'Cash left & carried'", "Tabs are now Month, F&F, Savings, Budget, More; Loans opens from a button above the + on the Month tab", "Import a savings file (More \u203a Restore, or the Savings tab when it's empty); importing the same file twice skips entries already there"]}, {"version": 5, "date": "2026-11-25T14:54:00+04:00", "changes": ["F&F groups: Export PDF next to Copy summary, with balances, settle-up payments and every entry with its details", "PDFs and Excel exports can be shared straight to WhatsApp, Gmail or Drive, or saved to Downloads/MonthlyBudget (Share needs app 1.2)", "App 1.2: adds the Share option and saves PDFs as proper PDF files"]}, {"version": 4, "date": "2026-11-25T14:33:00+04:00", "changes": ["Family tab replaced by Family & friends (F&F): groups for trips, flatmates, cousins or one person, with everything Splid does", "Group entries: expenses (one or several payers; split equally, by exact amounts, by shares or by percentage), money given (loans, repayments) and income (refunds)", "Any currency per entry with its own exchange rate; groups settle in the currency you choose", "Balances per person, Settle up with the fewest payments, and a Paid button that records each settlement", "Copy summary for WhatsApp, archive or delete groups, Excel export has a sheet per group", "Month tab: new Money owed card (what you owe family & friends) that opens the Money I owe list; Total debt renamed Loans outstanding and now counts loans only", "Your earlier family entries moved into their own group per person (e.g. Hisana)", "More: Exchange rates for all currencies, with the Gulf pegs preset"]}, {"version": 3, "date": "2026-11-25T13:39:00+04:00", "changes": ["Loans: new \"EMI deducted on (day of month)\" field and a \"Deducted automatically every month\" tick box", "Loans marked as automatic log their EMI by themselves on that day and add it to the month's expenses; starts from the next EMI day, nothing is back-filled", "Loans: \"EMIs paid before using the app\" and \"Amount paid before the app\" are now simply \"EMIs paid\" and \"Amount paid\" (totals)", "More: version shows when it was last updated; tap it for this log", "Dates now follow Dubai time instead of UTC"]}, {"version": 2, "date": "2026-11-25T13:12:00+04:00", "changes": ["Expenses can carry several categories, e.g. Housing + Loans & EMIs", "Monthly EMIs on the Month tab is the total of expenses tagged Loans & EMIs", "Budget: an expense in two categories counts in each bar but once in the total", "Excel export lists all of a line's categories"]}, {"version": 1, "date": "2026-11-25T12:50:00+04:00", "changes": ["First release: monthly income and expenses, loans and EMIs in AED and INR, family credit, budget by category", "Import from the Excel workbook, export to Excel with working formulas", "Weekly automatic backup to Downloads/MonthlyBudget"]}];
 const WEB_VERSION = CHANGELOG.length ? CHANGELOG[0].version : 0;
 // remember when this phone first ran each screens version
 let seenAt = null;
